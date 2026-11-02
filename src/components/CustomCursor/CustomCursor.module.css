@@ -1,0 +1,185 @@
+/* ========================================
+   CUSTOM CURSOR — LIVING UNDERWATER OXYGEN BUBBLE & RISING TRAIL
+   ======================================== */
+
+/* Fullscreen canvas for rising buoyant bubbles */
+.bubbleCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999998;
+}
+
+.bubbleCluster {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 999999;
+  will-change: transform;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+.visible {
+  opacity: 1;
+}
+
+/* ═══════════ Main Leading Oxygen Bubble ═══════════ */
+.mainBubble {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  
+  /* Translucent Glass Bubble Optics */
+  background: radial-gradient(
+    circle at 35% 30%,
+    rgba(255,255,255, 0.45) 0%,
+    rgba(255,255,255, 0.18) 35%,
+    rgba(220,238,255, 0.08) 70%,
+    rgba(255,247,204, 0.4) 100%
+  );
+  border: 1px solid rgba(32,43,70, 0.4);
+  box-shadow: 
+    inset 2px 2px 4px rgba(32,43,70, 0.2),
+    inset -2px -2px 5px rgba(32,43,70, 0.165),
+    0 0 12px rgba(32,43,70, 0.135);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 
+    width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.3s ease,
+    border-color 0.3s ease;
+  animation: mainBubbleWobble 4s ease-in-out infinite alternate;
+}
+
+.specularGlareTop {
+  position: absolute;
+  top: 14%;
+  left: 18%;
+  width: 32%;
+  height: 24%;
+  border-radius: 50%;
+  background: rgba(255,255,255, 0.95);
+  transform: rotate(-35deg);
+  filter: blur(0.4px);
+  pointer-events: none;
+}
+
+.rimReflectionBottom {
+  position: absolute;
+  bottom: 12%;
+  right: 16%;
+  width: 32%;
+  height: 18%;
+  border-radius: 50%;
+  background: rgba(255,247,204, 0.6);
+  transform: rotate(25deg);
+  filter: blur(0.8px);
+  pointer-events: none;
+}
+
+.innerRefractionRing {
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  border: 1px solid rgba(32,43,70, 0.2);
+  pointer-events: none;
+}
+
+/* ═══════════ Interactive States ═══════════ */
+.hovering .mainBubble {
+  width: 48px;
+  height: 48px;
+  border-color: rgba(32,43,70, 0.4);
+  background: radial-gradient(
+    circle at 35% 30%,
+    rgba(255,255,255, 0.5) 0%,
+    rgba(255,255,255, 0.22) 40%,
+    rgba(255,247,204, 0.48) 100%
+  );
+  box-shadow: 
+    inset 3px 3px 8px rgba(32,43,70, 0.2),
+    inset -3px -3px 8px rgba(32,43,70, 0.18),
+    0 0 20px rgba(32,43,70, 0.18);
+}
+
+/* Clicking Squeeze */
+.clicking .mainBubble {
+  transform: scale(0.85, 1.15);
+}
+
+/* Badge Mode (When hovering case studies) */
+.badgeMode .mainBubble {
+  width: 76px;
+  height: 76px;
+  background: radial-gradient(
+    circle at 35% 30%,
+    rgba(220,238,255, 0.88) 0%,
+    rgba(125,167,217, 0.94) 100%
+  );
+  border: 1.5px solid rgba(32,43,70, 0.4);
+  box-shadow: 
+    inset 2px 2px 6px rgba(32,43,70, 0.15),
+    0 8px 30px rgba(32,43,70, 0.18),
+    0 0 20px rgba(32,43,70, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+.cursorLabel {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  animation: fadeIn 0.2s ease forwards;
+  text-shadow: none;
+  position: relative;
+  z-index: 2;
+}
+
+/* ═══════════ Keyframe Animations ═══════════ */
+@keyframes mainBubbleWobble {
+  0% {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+  }
+  33% {
+    border-radius: 52% 48% 51% 49% / 49% 51% 48% 52%;
+  }
+  66% {
+    border-radius: 49% 51% 48% 52% / 52% 48% 51% 49%;
+  }
+  100% {
+    border-radius: 51% 49% 52% 48% / 48% 52% 49% 51%;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 768px), (pointer: coarse) {
+  .bubbleCluster,
+  .bubbleCanvas {
+    display: none !important;
+  }
+}
+
+/* Ice & Butter palette */
+.badgeMode .mainBubble { background: var(--navy); border-color: var(--butter); }
+.cursorLabel { color: var(--butter); }

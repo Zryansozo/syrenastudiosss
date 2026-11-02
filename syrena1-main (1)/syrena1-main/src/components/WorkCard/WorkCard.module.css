@@ -1,0 +1,119 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: rgba(11, 52, 90, 0.45);
+  border: 1px solid rgba(163, 190, 211, 0.22);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 16px 40px rgba(9, 30, 57, 0.5);
+  text-decoration: none;
+  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out), border-color 0.5s var(--ease-out);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 28px 70px rgba(6, 21, 40, 0.85), 0 0 35px rgba(121, 164, 192, 0.25);
+  border-color: rgba(121, 164, 192, 0.65);
+}
+
+.imageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--celestial-canvas);
+}
+
+.parallaxImg {
+  width: 100%;
+  height: 100%;
+}
+
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 30, 57, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+  z-index: 2;
+}
+
+.overlayCircle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--afloat);
+  color: var(--celestial-canvas);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0.6);
+  box-shadow: 0 0 25px rgba(121, 164, 192, 0.6);
+  transition: transform 0.4s var(--ease-out);
+}
+
+.card:hover .cardOverlay {
+  opacity: 1;
+}
+
+.card:hover .overlayCircle {
+  transform: scale(1);
+}
+
+.cardBody {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.categoryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-xs);
+}
+
+.categoryBadge {
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--afloat);
+}
+
+.statsBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--sea-drive);
+  background: rgba(33, 86, 124, 0.6);
+  border: 1px solid rgba(163, 190, 211, 0.25);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.cardTitle {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.card:hover .cardTitle {
+  color: var(--sea-drive);
+  text-shadow: 0 0 15px rgba(121, 164, 192, 0.4);
+}
+
+.cardDesc {
+  font-size: var(--fs-small);
+  color: var(--sea-drive);
+  line-height: 1.65;
+  opacity: 0.9;
+}

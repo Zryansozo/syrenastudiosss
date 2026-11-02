@@ -1,0 +1,85 @@
+.card {
+  text-align: center;
+}
+
+.imageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-md);
+  border: 1.5px solid rgba(163, 190, 211, 0.25);
+  box-shadow: 0 16px 45px rgba(6, 21, 40, 0.6);
+  transition: border-color var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.card:hover .imageWrap {
+  border-color: rgba(121, 164, 192, 0.6);
+  box-shadow: 0 22px 60px rgba(6, 21, 40, 0.8), 0 0 25px rgba(121, 164, 192, 0.2);
+}
+
+.imageWrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.card:hover .imageWrap img {
+  transform: scale(1.06);
+}
+
+.socials {
+  position: absolute;
+  bottom: var(--space-sm);
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out),
+              transform var(--duration-normal) var(--ease-out);
+  z-index: 2;
+}
+
+.card:hover .socials {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.socials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: rgba(11, 52, 90, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(163, 190, 211, 0.3);
+  border-radius: 50%;
+  color: var(--sea-drive);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.socials a:hover {
+  background-color: var(--afloat);
+  color: var(--celestial-canvas);
+  border-color: var(--afloat);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(121, 164, 192, 0.5);
+}
+
+.name {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 2px;
+}
+
+.role {
+  font-size: var(--fs-small);
+  color: var(--angel-falls);
+  font-weight: 600;
+}

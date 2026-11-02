@@ -1,0 +1,617 @@
+/* ========================================
+   SYRENA — Awwwards-Caliber Design System
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap');
+
+@font-face {
+  font-family: 'thunder';
+  src: url('/fonts/thunder.woff2') format('woff2');
+  font-display: swap;
+  font-weight: 400 900;
+  font-style: normal;
+}
+
+
+/* ---------- CSS Custom Properties ---------- */
+:root {
+  /* Brand primitives. Components use the semantic aliases below. */
+  --signature-blue: #779EE8;
+  --midnight-navy: #202B46;
+  --powder-blue: #DCE8FA;
+  --butter-yellow: #F7E49A;
+  --warm-white: #FFFEFA;
+  --paper-cream: #F8F3E9;
+  --royal-blue: #3455D1;
+  --soft-coral: #F48C79;
+  --soft-lilac: #D9C9F2;
+  --pistachio-mint: #D5E4D2;
+  --button-hover: #202B46;
+  --text-placeholder: #545C71;
+  --border-width: 1.5px;
+  /* Blue is the default canvas; warm colors punctuate the composition. */
+  --surface-brand: var(--midnight-navy);
+  --text-on-brand: var(--warm-white);
+  --surface-secondary: var(--powder-blue);
+  --surface-image: var(--powder-blue);
+  --surface-neutral: var(--warm-white);
+  --cobalt: var(--signature-blue);
+  --navy: var(--midnight-navy);
+  --ice: var(--powder-blue);
+  --butter: var(--butter-yellow);
+  --white: var(--warm-white);
+  --paper: var(--paper-cream);
+  --electric: var(--royal-blue);
+  --coral: var(--soft-coral);
+  --lilac: var(--soft-lilac);
+  --mint: var(--pistachio-mint);
+  --ink: var(--midnight-navy);
+  --bg-primary: var(--surface-brand);
+  --bg-dark: var(--navy);
+  --bg-section-alt: var(--ice);
+  --bg-card: var(--ice);
+  --bg-card-hover: var(--white);
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink);
+  --text-muted: var(--navy);
+  --text-light: var(--ink);
+  --accent: var(--butter);
+  --accent-dark: var(--navy);
+  --border-subtle: rgba(32,43,70, 0.18);
+  --border-bright: rgba(32,43,70, 0.4);
+
+  /* Legacy aliases keep every existing component on the same palette. */
+  --celestial-canvas: var(--cobalt);
+  --ambassador-blue: var(--ice);
+  --sea-drive: var(--ink);
+  --angel-falls: var(--navy);
+  --bluetwist: var(--navy);
+  --blueberry-twist: var(--navy);
+  --afloat: var(--butter);
+  --borage: var(--cobalt);
+  --moonlight: var(--ice);
+  --frost: var(--navy);
+  --steel: var(--cobalt);
+  --storm: var(--ice);
+  --oxford: var(--cobalt);
+  --oxford-deep: var(--navy);
+  --off-white: var(--ice);
+  --light-blue: var(--ice);
+  --frost-light: rgba(220,232,250, 0.5);
+  --frost-glow: rgba(247,228,154, 0.25);
+  --accent-cyan: var(--butter);
+
+  --celestial-canvas-90: rgba(119,158,232, 0.9);
+  --celestial-canvas-70: rgba(119,158,232, 0.7);
+  --ambassador-blue-80: rgba(220,232,250, 0.8);
+  --ambassador-blue-50: rgba(220,232,250, 0.5);
+  --ambassador-blue-30: rgba(220,232,250, 0.3);
+  --bluetwist-60: rgba(32,43,70, 0.6);
+  --bluetwist-30: rgba(32,43,70, 0.3);
+  --blueberry-twist-60: rgba(32,43,70, 0.6);
+  --blueberry-twist-30: rgba(32,43,70, 0.3);
+  --borage-40: rgba(119,158,232, 0.4);
+  --borage-25: rgba(119,158,232, 0.25);
+  --afloat-40: rgba(247,228,154, 0.4);
+  --afloat-20: rgba(247,228,154, 0.2);
+  --angel-falls-30: rgba(32,43,70, 0.3);
+  --angel-falls-15: rgba(32,43,70, 0.15);
+  --sea-drive-40: rgba(220,232,250, 0.4);
+  --sea-drive-20: rgba(220,232,250, 0.2);
+
+  --gradient-ocean-deep: var(--powder-blue);
+  --gradient-ocean-flow: var(--powder-blue);
+  --gradient-ocean-accent: var(--powder-blue);
+  --gradient-ocean-button: var(--powder-blue);
+  --gradient-ocean-hover: var(--powder-blue);
+  --gradient-light-card: var(--powder-blue);
+  --gradient-spectrum-7: var(--powder-blue);
+
+  /* Typography System — Awwwards Oceanic Atelier */
+  --font-thunder: 'thunder', 'Syne', 'Outfit', 'Impact', sans-serif;
+  --font-display: 'Syne', 'Outfit', sans-serif;
+  --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  --font-serif: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-mono: 'Space Grotesk', ui-monospace, monospace;
+  --font-body: 'Plus Jakarta Sans', 'Outfit', -apple-system, sans-serif;
+
+  /* Font Sizes — fluid with clamp */
+  --fs-display: clamp(3.2rem, 7vw, 6.8rem);
+  --fs-h1: clamp(2.4rem, 4.8vw, 4.4rem);
+  --fs-h2: clamp(1.9rem, 3.4vw, 3.2rem);
+  --fs-h3: clamp(1.3rem, 2.2vw, 1.8rem);
+  --fs-body: clamp(0.98rem, 1.25vw, 1.12rem);
+  --fs-small: clamp(0.82rem, 1vw, 0.92rem);
+  --fs-label: 0.78rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6.5rem;
+  --space-3xl: 9.5rem;
+
+  /* Layout */
+  --container-max: 1320px;
+  --container-narrow: 900px;
+  --nav-height: 84px;
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --duration-fast: 0.2s;
+  --duration-normal: 0.4s;
+  --duration-slow: 0.75s;
+
+  /* Borders & Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 36px;
+  --radius-pill: 9999px;
+
+  /* Shadows Infused with Oceanic Blues */
+  --shadow-sm: 0 2px 8px rgba(9,30,57, 0.25);
+  --shadow-md: 0 8px 30px rgba(9,30,57, 0.4);
+  --shadow-lg: 0 16px 50px rgba(6,21,40, 0.6);
+  --shadow-xl: 0 24px 80px rgba(6,21,40, 0.8);
+  --shadow-blue: 0 12px 40px rgba(33,86,124, 0.45);
+  --shadow-glow: 0 0 50px rgba(123,161,197, 0.35);
+}
+
+/* ---------- Lenis Recommended CSS ---------- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--ink);
+  background-color: var(--bg-primary);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Ambient Grain Overlay */
+.ambient-grain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ---------- Typography ---------- */
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  color: var(--ink);
+}
+
+h3,
+h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+h1 {
+  font-size: var(--fs-h1);
+}
+
+h2 {
+  font-size: var(--fs-h2);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+}
+
+h4 {
+  font-size: var(--fs-h4);
+}
+
+p {
+  font-family: var(--font-body);
+  color: var(--ink);
+  max-width: 65ch;
+  line-height: 1.75;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 18px;
+  background: linear-gradient(135deg, rgba(220,232,250, 0.65) 0%, rgba(119,158,232, 0.35) 100%);
+  border: 1px solid rgba(32,43,70, 0.4);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 16px rgba(32,43,70, 0.135), 0 0 16px rgba(32,43,70, 0.075);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  margin-bottom: 1rem;
+}
+
+.label::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--afloat);
+  box-shadow: 0 0 12px var(--afloat);
+}
+
+/* ---------- Layout Utilities ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+.section {
+  padding: var(--space-3xl) 0;
+  position: relative;
+}
+
+.section--dark {
+  background-color: var(--celestial-canvas);
+  color: var(--ink);
+}
+
+.section--dark h1,
+.section--dark h2,
+.section--dark h3,
+.section--dark h4 {
+  color: var(--ink);
+}
+
+.section--dark p {
+  color: var(--ink);
+}
+
+.section--dark .label {
+  color: var(--ink);
+}
+
+.section--alt {
+  position: relative;
+  background: 
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(220,232,250, 0.75) 0%, rgba(119,158,232, 0.3) 65%, transparent 85%),
+    var(--celestial-canvas);
+  overflow: hidden;
+}
+
+.section--alt::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, var(--celestial-canvas) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.section--alt::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, transparent 0%, var(--celestial-canvas) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.section--storm {
+  position: relative;
+  background: 
+    radial-gradient(ellipse 75% 55% at 50% 50%, rgba(220,232,250, 0.6) 0%, rgba(119,158,232, 0.25) 65%, transparent 85%),
+    var(--celestial-canvas);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.section--storm::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, var(--celestial-canvas) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.section--storm::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, transparent 0%, var(--celestial-canvas) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Oceanic deep blue radiant gradient flow — seamless without hard breaklines */
+.section--ocean-flow,
+.section--gradient {
+  background: 
+    radial-gradient(ellipse 75% 55% at 15% 45%, rgba(247,228,154, 0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 65% 50% at 85% 55%, rgba(119,158,232, 0.2) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(220,232,250, 0.25) 0%, transparent 70%),
+    linear-gradient(180deg, var(--celestial-canvas) 0%, var(--ice) 45%, var(--celestial-canvas) 100%);
+  color: var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.section--ocean-flow::before,
+.section--gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, var(--celestial-canvas) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.section--ocean-flow::after,
+.section--gradient::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, transparent 0%, var(--celestial-canvas) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.section--gradient h1,
+.section--gradient h2,
+.section--gradient h3,
+.section--gradient h4 {
+  color: var(--ink);
+}
+
+.section--gradient p {
+  color: var(--ink);
+}
+
+/* ---------- Grid Utilities ---------- */
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.grid--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid--3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+
+  .grid--4,
+  .grid--3,
+  .grid--2 {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: var(--space-2xl) 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 var(--space-sm);
+  }
+
+  .section {
+    padding: var(--space-xl) 0;
+  }
+}
+
+/* ---------- Section Header ---------- */
+.section-header {
+  margin-bottom: var(--space-xl);
+}
+
+.section-header .label {
+  margin-bottom: var(--space-sm);
+}
+
+.section-header h2 {
+  margin-bottom: var(--space-md);
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  background: var(--navy);
+  -webkit-background-clip: var(--navy);
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 20px rgba(9,30,57, 0.6));
+}
+
+.section-header p {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  color: var(--ink);
+}
+
+/* ---------- Glassmorphism Card ---------- */
+.glass {
+  background: linear-gradient(145deg, rgba(220,232,250, 0.8) 0%, rgba(220,232,250, 0.5) 50%, rgba(119,158,232, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(32,43,70, 0.35);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 50px rgba(32,43,70, 0.2), inset 0 1px 0 rgba(32,43,70, 0.045);
+}
+
+/* Highlight text gradient */
+.text-gradient {
+  background: var(--navy);
+  -webkit-background-clip: var(--navy);
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- Selection ---------- */
+::selection {
+  background-color: var(--afloat);
+  color: var(--ink);
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cobalt);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ice);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--butter);
+}
+
+/* Shared surfaces and interaction accessibility. */
+body { background: var(--surface-brand); }
+:focus-visible { outline: 3px solid var(--navy); outline-offset: 5px; }
+::selection { background: var(--butter); color: var(--ink); }
+.label { background: var(--butter); color: var(--ink); border: 1px solid var(--navy); box-shadow: none; backdrop-filter: none; }
+.label::before { background: var(--navy); box-shadow: none; }
+.section--alt { background: var(--surface-secondary); }
+.section--storm, .section--ocean-flow { background: var(--cobalt); }
+.section--gradient { background: var(--butter); }
+.section-header h2, .text-gradient { background: none; -webkit-text-fill-color: var(--navy); color: var(--navy); filter: none; }
+.glass { background: var(--surface-secondary); box-shadow: none; border-color: var(--navy); }
+::-webkit-scrollbar-track { background: var(--ice); }
+::-webkit-scrollbar-thumb { background: var(--navy); }
+input, textarea, select { accent-color: var(--electric); caret-color: var(--navy); }
+input::placeholder, textarea::placeholder { color: var(--text-placeholder); opacity: 1; }
+:is(button, a, input, textarea, select) { -webkit-tap-highlight-color: transparent; }
+button:disabled { cursor: not-allowed; opacity: .55; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}

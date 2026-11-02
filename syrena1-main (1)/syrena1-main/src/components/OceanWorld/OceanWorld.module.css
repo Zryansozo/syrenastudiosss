@@ -1,0 +1,21 @@
+.oceanWorld {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 30%, #103c60, #051a30 85%);
+}
+.motionToggle {
+  position: absolute;
+  top: 16px;
+  right: clamp(16px, 3vw, 48px);
+  z-index: 3;
+  padding: 6px 10px;
+  border: 1px solid #a3bed34d;
+  border-radius: 3px;
+  color: #c0d2e0;
+  background: #051a30d9;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.motionToggle:focus-visible { outline: 2px solid #c0d2e0; outline-offset: 4px; }

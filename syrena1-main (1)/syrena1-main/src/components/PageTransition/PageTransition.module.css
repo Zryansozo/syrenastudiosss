@@ -1,0 +1,38 @@
+.pageTransitionWrap {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.shutterContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  pointer-events: none;
+  display: flex;
+}
+
+.shutterColumn {
+  flex: 1;
+  height: 100%;
+  background-color: var(--oxford);
+  border-right: 1px solid rgba(139, 163, 197, 0.08);
+  transform-origin: top;
+}
+
+.brandLogoReveal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100000;
+  pointer-events: none;
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  letter-spacing: 0.15em;
+  color: var(--moonlight);
+  text-transform: uppercase;
+}

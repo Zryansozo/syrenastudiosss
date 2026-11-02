@@ -1,0 +1,360 @@
+/* ========================================
+   SERVICES PAGE — AWWWARDS CALIBER STYLING
+   ======================================== */
+
+/* ---------- Page Header ---------- */
+.pageHeader {
+  padding-top: calc(var(--nav-height) + var(--space-3xl));
+  padding-bottom: var(--space-3xl);
+  background: radial-gradient(circle at 50% 20%, #0B345A 0%, var(--oxford) 80%);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.headerGlow1 {
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(121, 164, 192, 0.2) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.headerGlow2 {
+  position: absolute;
+  bottom: 0;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(76, 129, 163, 0.2) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.headerInner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-md);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.titleHighlight {
+  background: linear-gradient(135deg, #FFFFFF 0%, #A3BED3 60%, #79A4C0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pageDesc {
+  max-width: 650px;
+  margin: 0 auto;
+  font-size: var(--fs-body);
+  line-height: 1.8;
+  color: var(--sea-drive);
+}
+
+/* ---------- Ocean Section (shared 2.5D world) ---------- */
+.oceanSection {
+  position: relative;
+  overflow: hidden;
+  background: #040e1e;
+  isolation: isolate;
+  transform-style: preserve-3d;
+}
+
+/* ---------- Service Grid ---------- */
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.postcardGridItem {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  align-self: start;
+}
+
+
+.serviceCardExtended {
+  background: rgba(11, 52, 90, 0.45);
+  border: 1px solid rgba(163, 190, 211, 0.22);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 16px 40px rgba(9, 30, 57, 0.4);
+  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out), border-color 0.5s var(--ease-out);
+}
+
+.serviceCardExtended:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 28px 70px rgba(6, 21, 40, 0.8), 0 0 30px rgba(121, 164, 192, 0.2);
+  border-color: rgba(121, 164, 192, 0.65);
+}
+
+.serviceCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.serviceIconWrap {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: rgba(76, 129, 163, 0.25);
+  border: 1px solid rgba(163, 190, 211, 0.3);
+  color: var(--afloat);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s var(--ease-out);
+}
+
+.serviceCardExtended:hover .serviceIconWrap {
+  background: var(--afloat);
+  color: var(--celestial-canvas);
+  border-color: var(--afloat);
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(121, 164, 192, 0.5);
+}
+
+.serviceMetricBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  background: rgba(33, 86, 124, 0.6);
+  border: 1px solid rgba(163, 190, 211, 0.25);
+  color: var(--sea-drive);
+  border-radius: var(--radius-pill);
+}
+
+.serviceTitle {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: var(--space-xs);
+}
+
+.serviceDesc {
+  font-size: var(--fs-small);
+  color: var(--sea-drive);
+  line-height: 1.7;
+  margin-bottom: var(--space-md);
+}
+
+.deliverablesList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: var(--space-lg);
+  padding-top: var(--space-sm);
+  border-top: 1px solid rgba(163, 190, 211, 0.15);
+  flex-grow: 1;
+}
+
+.deliverableItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--angel-falls);
+}
+
+.serviceCardBottom {
+  margin-top: auto;
+}
+
+/* ---------- Process ---------- */
+.processGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+  position: relative;
+}
+
+.processCard {
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+  background: rgba(11, 52, 90, 0.45);
+  border: 1px solid rgba(163, 190, 211, 0.22);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: relative;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+}
+
+.processCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(6, 21, 40, 0.8), 0 0 25px rgba(121, 164, 192, 0.2);
+  border-color: rgba(121, 164, 192, 0.6);
+}
+
+.processNumber {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--afloat);
+  opacity: 0.9;
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+  transition: opacity 0.3s, text-shadow 0.3s;
+}
+
+.processCard:hover .processNumber {
+  opacity: 1;
+  text-shadow: 0 0 20px rgba(121, 164, 192, 0.5);
+}
+
+.processTitle {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: var(--space-xs);
+}
+
+.processDesc {
+  font-size: var(--fs-small);
+  color: var(--sea-drive);
+  line-height: 1.7;
+}
+
+.processArrow {
+  display: none;
+  position: absolute;
+  right: -22px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--afloat);
+  opacity: 0.7;
+  z-index: 2;
+}
+
+@media (min-width: 1025px) {
+  .processArrow {
+    display: block;
+  }
+}
+
+/* ---------- CTA ---------- */
+.ctaBanner {
+  text-align: center;
+  background: radial-gradient(circle at 50% 50%, #0B345A 0%, var(--celestial-canvas) 80%);
+  color: var(--sea-drive);
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-3xl) 0;
+}
+
+.ctaInner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.ctaInner h2 {
+  font-family: var(--font-heading);
+  color: #FFFFFF;
+  font-size: var(--fs-h2);
+  margin-bottom: var(--space-md);
+}
+
+.ctaInner p {
+  color: var(--sea-drive);
+  margin: 0 auto var(--space-xl);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1024px) {
+  .serviceGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .processGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .serviceGrid {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .processGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .processCard {
+    text-align: left;
+    display: flex;
+    gap: var(--space-md);
+    padding: var(--space-md);
+  }
+
+  .processNumber {
+    font-size: 2rem;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+}
+
+/* ---------- Animated postcard service-card wrappers ---------- */
+
+.postcardGridItem {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  align-self: start;
+}
+
+.postcardGridItem > * {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+.serviceGrid { translate: var(--ocean-card-x, 0px) var(--ocean-card-y, 0px); }

@@ -1,0 +1,259 @@
+{
+  "name": "SyrenaStudio Ocean Scrapbook Asset Pack",
+  "purpose": "Individual transparent assets for a layered 3D/interactive ocean scrapbook website background.",
+  "source_sheet": "asset-sheet.png",
+  "background_reference": "wide-background-reference.png",
+  "notes": [
+    "Assets are isolated crops from the generated transparent asset sheet.",
+    "Use CSS/Three.js planes or sprites for depth and parallax.",
+    "Recommended depth: paper scraps far back, doodles mid, marine stickers foreground.",
+    "Keep the center area relatively clear for the six service cards."
+  ],
+  "assets": {
+    "starfish_large": {
+      "file": "assets/starfish_large.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "starfish_small": {
+      "file": "assets/starfish_small.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "scallop_shell": {
+      "file": "assets/scallop_shell.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "conch_shell": {
+      "file": "assets/conch_shell.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "coral_cream": {
+      "file": "assets/coral_cream.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "coral_blue": {
+      "file": "assets/coral_blue.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "seahorse": {
+      "file": "assets/seahorse.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "jellyfish_large": {
+      "file": "assets/jellyfish_large.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "jellyfish_small": {
+      "file": "assets/jellyfish_small.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "shell_small_left": {
+      "file": "assets/shell_small_left.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "shell_spiky": {
+      "file": "assets/shell_spiky.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "shell_fan_small": {
+      "file": "assets/shell_fan_small.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "shell_round": {
+      "file": "assets/shell_round.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "nautilus_shell": {
+      "file": "assets/nautilus_shell.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "seabirds": {
+      "file": "assets/seabirds.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "fish_group": {
+      "file": "assets/fish_group.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "fish_large": {
+      "file": "assets/fish_large.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "fish_small": {
+      "file": "assets/fish_small.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "seaweed_cluster": {
+      "file": "assets/seaweed_cluster.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "heart_blue": {
+      "file": "assets/heart_blue.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "heart_small": {
+      "file": "assets/heart_small.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "star_blue": {
+      "file": "assets/star_blue.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "glitter_blue_1": {
+      "file": "assets/glitter_blue_1.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "glitter_blue_2": {
+      "file": "assets/glitter_blue_2.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "postcard_sailboat": {
+      "file": "assets/postcard_sailboat.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "postcard_wave": {
+      "file": "assets/postcard_wave.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "postcard_palm": {
+      "file": "assets/postcard_palm.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "postcard_ocean": {
+      "file": "assets/postcard_ocean.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "postcard_lighthouse": {
+      "file": "assets/postcard_lighthouse.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "nautical_compass": {
+      "file": "assets/nautical_compass.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "postmark_lines": {
+      "file": "assets/postmark_lines.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "anchor": {
+      "file": "assets/anchor.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "shell_outline": {
+      "file": "assets/shell_outline.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "paper_dark": {
+      "file": "assets/paper_dark.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "paper_blue": {
+      "file": "assets/paper_blue.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "paper_cream": {
+      "file": "assets/paper_cream.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "paper_blue_small": {
+      "file": "assets/paper_blue_small.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "paper_wave_torn": {
+      "file": "assets/paper_wave_torn.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "paper_strip_blue": {
+      "file": "assets/paper_strip_blue.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "paper_strip_cream": {
+      "file": "assets/paper_strip_cream.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "tape_blue": {
+      "file": "assets/tape_blue.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "tape_gingham": {
+      "file": "assets/tape_gingham.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "paper_grid": {
+      "file": "assets/paper_grid.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "water_splash": {
+      "file": "assets/water_splash.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "bubble_cluster": {
+      "file": "assets/bubble_cluster.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "blue_doodle": {
+      "file": "assets/blue_doodle.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "wave_doodle": {
+      "file": "assets/wave_doodle.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "flower_blue": {
+      "file": "assets/flower_blue.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    },
+    "pearl_cluster": {
+      "file": "assets/pearl_cluster.png",
+      "suggested_depth": "mid",
+      "suggested_behavior": "slow drift + subtle rotation"
+    }
+  }
+}

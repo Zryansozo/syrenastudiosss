@@ -1,0 +1,249 @@
+/* ========================================
+   SYRENA — BIOLUMINESCENT SIREN REALM & HYDRO CAUSTICS
+   ======================================== */
+
+.sirenRealmContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ═══════════ Ocean Caustic Shimmer & Light Pillars ═══════════ */
+.oceanCausticOverlay {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 50% 0%, rgba(100, 210, 255, 0.18) 0%, rgba(35, 53, 77, 0.05) 50%, transparent 80%),
+    radial-gradient(circle at 50% 100%, rgba(2, 11, 24, 0.95) 0%, transparent 60%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.abyssalGlowCenter {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 75vw;
+  max-width: 1100px;
+  height: 450px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(100, 210, 255, 0.12) 0%,
+    rgba(139, 163, 197, 0.08) 35%,
+    rgba(35, 53, 77, 0.04) 65%,
+    transparent 80%
+  );
+  filter: blur(70px);
+  animation: breatheAbyss 14s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sirenChasmGlow {
+  position: absolute;
+  bottom: -15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85vw;
+  height: 350px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(139, 163, 197, 0.09) 0%,
+    rgba(2, 11, 24, 0) 70%
+  );
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════ Underwater Sunken Light Rays ═══════════ */
+.sunkenLightRayLeft {
+  position: absolute;
+  top: -100px;
+  left: 15%;
+  width: 220px;
+  height: 120%;
+  background: linear-gradient(
+    135deg,
+    rgba(100, 210, 255, 0.07) 0%,
+    rgba(139, 163, 197, 0.02) 50%,
+    transparent 85%
+  );
+  transform: rotate(-18deg);
+  transform-origin: top left;
+  filter: blur(30px);
+  pointer-events: none;
+  animation: rayShimmer1 16s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+.sunkenLightRayRight {
+  position: absolute;
+  top: -100px;
+  right: 15%;
+  width: 240px;
+  height: 120%;
+  background: linear-gradient(
+    225deg,
+    rgba(240, 236, 221, 0.06) 0%,
+    rgba(100, 210, 255, 0.02) 50%,
+    transparent 85%
+  );
+  transform: rotate(16deg);
+  transform-origin: top right;
+  filter: blur(35px);
+  pointer-events: none;
+  animation: rayShimmer2 20s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+/* ═══════════ Interactive Bioluminescent Cursor Aura ═══════════ */
+.bioluminescentAura {
+  position: absolute;
+  top: -180px;
+  left: -180px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(100, 210, 255, 0.22) 0%,
+    rgba(139, 163, 197, 0.09) 40%,
+    transparent 70%
+  );
+  filter: blur(28px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  will-change: transform;
+  z-index: 1;
+}
+
+/* ═══════════ Siren Canvas ═══════════ */
+.sirenCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ═══════════ Frequency / Oceanic Accents ═══════════ */
+.sirenFrequencyLeft {
+  position: absolute;
+  bottom: 2rem;
+  left: 3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(2, 11, 24, 0.6);
+  border: 1px solid rgba(139, 163, 197, 0.15);
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.75;
+}
+
+.sirenFrequencyRight {
+  position: absolute;
+  bottom: 2rem;
+  right: 3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(2, 11, 24, 0.6);
+  border: 1px solid rgba(100, 210, 255, 0.15);
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.75;
+}
+
+.freqLabel {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--frost);
+  text-transform: uppercase;
+}
+
+.freqPulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+  animation: pulseFreq 1.8s ease-in-out infinite;
+}
+
+.freqPulseAlt {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--moonlight);
+  box-shadow: 0 0 8px var(--moonlight);
+  animation: pulseFreq 2.2s ease-in-out infinite reverse;
+}
+
+@media (max-width: 900px) {
+  .sirenFrequencyLeft,
+  .sirenFrequencyRight {
+    display: none;
+  }
+}
+
+/* ═══════════ Keyframe Animations ═══════════ */
+@keyframes breatheAbyss {
+  0% {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.08);
+  }
+}
+
+@keyframes rayShimmer1 {
+  0% {
+    opacity: 0.4;
+    transform: rotate(-18deg) scaleX(0.9);
+  }
+  100% {
+    opacity: 0.85;
+    transform: rotate(-14deg) scaleX(1.15);
+  }
+}
+
+@keyframes rayShimmer2 {
+  0% {
+    opacity: 0.4;
+    transform: rotate(16deg) scaleX(0.85);
+  }
+  100% {
+    opacity: 0.8;
+    transform: rotate(20deg) scaleX(1.1);
+  }
+}
+
+@keyframes pulseFreq {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,57 @@
+/* ====================================================
+   16:9 FULL-BLEED PROCEDURAL CYANOTYPE CANVAS
+   ==================================================== */
+
+.cyanotype16x9Container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  background-color: #061A33;
+}
+
+.cyanotypeCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Subtle Top Navigation Scrim */
+.topVignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(
+    to bottom,
+    rgba(3, 14, 29, 0.7) 0%,
+    rgba(3, 14, 29, 0.2) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Bottom Seamless Transition Fade into the rest of the website */
+.bottomSeamlessFade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(6, 26, 51, 0.4) 40%,
+    rgba(6, 26, 51, 0.85) 75%,
+    var(--celestial-canvas, #061A33) 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+}

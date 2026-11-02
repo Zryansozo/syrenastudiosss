@@ -1,0 +1,42 @@
+.page { background:var(--surface-brand); }
+.flow { background:var(--surface-brand); }
+
+.header { display:grid; grid-template-columns:1.3fr .7fr; gap:4%; align-items:center; padding-bottom:0; }
+.header h1 { font-size:clamp(3.3rem,5.8vw,6rem); }
+.header p { max-width:530px; }
+.jellyfish { width:115%; max-width:115%; margin-left:-8%; transform:rotate(9deg); pointer-events:none; }
+.diveLink { display:flex; align-items:center; gap:12px; width:fit-content; margin-top:25px; font:500 .6rem var(--font-mono); }
+.oceanSection { position:relative; isolation:isolate; transform-style:preserve-3d; background:var(--surface-brand); padding:100px 0 120px; }
+.oceanContent { position:relative; z-index:3; }
+.oceanTopFade,.oceanBottomFade { display:none; }
+.oceanHeading { text-align:center; margin-bottom:25px; }
+.oceanHeading h2 { margin:15px 0; font-size:2.6rem; }
+.oceanHeading p { margin:auto; font-size:.79rem; }
+.serviceGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); column-gap:45px; row-gap:28px; translate:var(--ocean-card-x,0px) var(--ocean-card-y,0px); }
+.postcardGridItem { min-width:0; position:relative; }
+.objectLabel { display:block; width:fit-content; max-width:100%; margin:0 auto; padding:8px 13px; border:1px solid rgba(32,43,70,.4); border-radius:30px; background:var(--ice); color:var(--ink); font:500 .59rem var(--font-mono); text-align:center; }
+.oceanSection > button { top:45px; }
+.serviceList { margin-top:40px; }
+.serviceDetail { border-bottom:1px solid var(--cobalt); scroll-margin-top:130px; }
+.serviceDetail:first-child { border-top:1px solid var(--cobalt); }
+.serviceDetail summary { display:flex; align-items:center; gap:25px; list-style:none; cursor:pointer; padding:25px 12px; }
+.serviceDetail summary::-webkit-details-marker { display:none; }
+.serviceDetail summary > span { font:500 .65rem var(--font-mono); }
+.serviceDetail summary > svg:first-of-type { width:45px; height:45px; color:var(--butter); }
+.serviceDetail h3 { flex:1; font-size:1.8rem; font-weight:500; }
+.serviceDetail summary > svg:last-child { transition:transform .2s; }
+.serviceDetail[open] summary > svg:last-child { transform:rotate(45deg); }
+.detailBody { padding:0 30px 30px 132px; display:grid; grid-template-columns:1.1fr 1fr; gap:45px; align-items:start; }
+.detailBody p { font-size:.84rem; }
+.processTitle { margin-top:25px; }
+@media(max-width:850px) { .header { grid-template-columns:1.4fr .6fr; } .jellyfish { width:160%; max-width:160%; margin-left:-30%; opacity:.8; } .serviceGrid { column-gap:25px; } .detailBody { gap:25px; padding-left:110px; } }
+@media(max-width:600px) { .header { display:block; padding-top:140px; padding-bottom:30px; } .header h1 { font-size:3.6rem; } .jellyfish { width:210px; max-width:65%; margin:5px 0 -65px auto; opacity:.9; } .serviceGrid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:35px 18px; } .oceanHeading h2 { font-size:2.3rem; } .oceanSection { padding-top:120px; padding-bottom:130px; } .objectLabel { font-size:.47rem; padding:7px 9px; } .serviceDetail summary { gap:15px; padding:22px 0; } .serviceDetail summary > svg:first-of-type { width:32px; height:32px; } .serviceDetail h3 { font-size:1.4rem; } .detailBody { grid-template-columns:1fr; padding:0 0 25px 38px; gap:18px; } }
+@media(prefers-reduced-motion:reduce) { .serviceDetail summary > svg { transition:none; } }
+
+.header h1 { font-weight:900; line-height:.96; }
+.oceanSection { border-block:1px solid var(--navy); }
+.flow > section:nth-child(2) { background:var(--surface-brand); }
+.flow > section:nth-child(3) { background:var(--surface-brand); border-top:1px solid var(--navy); }
+.serviceDetail h3 { font-weight:800; }
+.detailBody p { font-size:1rem; }
+.objectLabel { font-size:.7rem; }

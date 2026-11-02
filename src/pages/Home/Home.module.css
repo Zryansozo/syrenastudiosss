@@ -1,0 +1,43 @@
+.page { background:var(--surface-brand); }
+.flow { background:var(--surface-brand); }
+
+.hero { position:relative; isolation:isolate; min-height:820px; height:min(100svh,1000px); background:var(--surface-brand); overflow:hidden; }
+.heroInner { position:relative; z-index:3; max-width:1280px; width:88%; margin:auto; padding-top:170px; padding-bottom:100px; display:grid; grid-template-columns:1.2fr 1fr; align-items:center; gap:8%; min-height:100%; pointer-events:none; }
+.heroCopy,.postcard { pointer-events:auto; }
+.heroCopy { position:relative; max-width:620px; }
+.heroCopy h1 { font-size:clamp(4rem,7.8vw,8rem); font-weight:900; line-height:.9; letter-spacing:-.065em; text-transform:uppercase; margin:28px 0; }
+.heroCopy > p { max-width:410px; margin-bottom:28px; }
+.oceanWash { position:absolute; z-index:2; inset:0; background:rgba(32,43,70,.8); pointer-events:none; }
+.postcard { justify-self:center; position:relative; transform:rotate(5deg); }
+.postcardNote { display:block; margin-top:27px; font:600 .54rem var(--font-mono); text-align:center; }
+.diveLink { display:flex; gap:12px; align-items:center; width:fit-content; margin-top:28px; font:500 .57rem var(--font-mono); }
+.heroFade { display:none; }
+.hero > button { top:auto; bottom:22px; right:5%; z-index:4; }
+.intro,.play,.feature { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:9%; }
+.intro h2,.play h2,.feature h2 { margin:22px 0; }
+.intro p,.play p,.feature p { margin-bottom:20px; }
+.intro .introArt { color:var(--ink); background:var(--surface-image); border-radius:24px; isolation:isolate; position:relative; min-width:0; padding:12px; }
+.introArt img { mix-blend-mode:multiply; position:relative; width:100%; z-index:1; transform:rotate(-6deg); }
+.orbitRing { position:absolute; inset:14% 0; border:1px solid rgba(32,43,70,.25); border-radius:50%; transform:rotate(-30deg); }
+.roundNote { position:absolute; right:0; top:15%; width:100px; height:100px; border:1px solid var(--ink); border-radius:50%; background:var(--coral); display:grid; place-content:center; text-align:center; font:600 .63rem/1.3 var(--font-mono); z-index:2; transform:rotate(15deg); }
+.artLabel { display:block; text-align:center; font:500 .5rem var(--font-mono); margin-top:10px; }
+.play { padding-top:160px; }
+.play > svg { top:0; }
+.pearlNote { display:flex; align-items:center; gap:15px; margin-top:35px; font:500 .57rem/1.6 var(--font-mono); }
+.pearlNote svg { width:50px; height:50px; }
+.feature { gap:7%; grid-template-columns:1.3fr 1fr; }
+.conceptImage { color:var(--ink); background:var(--surface-image); isolation:isolate; position:relative; border:1px solid var(--ink); border-radius:16px; overflow:hidden; transform:rotate(-3deg); box-shadow:8px 9px 0 rgba(32,43,70,.08); transition:transform .3s; }
+.conceptImage:hover { transform:rotate(0); }
+.conceptImage img { mix-blend-mode:multiply; width:100%; aspect-ratio:1.25; object-fit:cover; }
+.conceptImage span { display:flex; align-items:center; justify-content:space-between; gap:15px; padding:18px; background:var(--butter); font:600 .56rem var(--font-mono); }
+.heroCopy :global(.studio-action) { background:var(--butter); color:var(--navy); }
+.heroCopy :global(.studio-action:hover) { background:var(--navy); color:var(--white); }
+.intro { background:var(--surface-brand); }
+.play { background:var(--surface-brand); border-block:1px solid var(--cobalt); }
+.feature { background:var(--surface-brand); }
+.conceptImage { border-radius:24px; transform:rotate(-2deg); }
+.conceptImage span { padding:20px; font-size:.7rem; }
+.postcardNote,.artLabel,.diveLink { font-size:.7rem; }
+@media(max-width:1000px) { .heroInner { gap:4%; width:90%; } .heroCopy h1 { font-size:clamp(3.5rem,7.6vw,6rem); } .intro,.play,.feature { gap:5%; } }
+@media(max-width:760px) { .hero { height:auto; min-height:0; } .heroInner { padding-top:140px; grid-template-columns:1fr; gap:50px; padding-bottom:90px; } .heroCopy h1 { font-size:clamp(3.3rem,12vw,6.2rem); } .heroCopy > p { max-width:460px; } .postcard { justify-self:center; } .intro,.play,.feature { grid-template-columns:1fr; gap:40px; } .introArt { max-width:440px; margin:auto; } .play { padding-top:100px; } .featureCopy { padding-top:20px; } .conceptImage img { aspect-ratio:1.5; } }
+@media(max-width:480px) { .heroInner { width:calc(100% - 44px); } .heroCopy :global(.studio-eyebrow) { font-size:.65rem; } .postcard { transform:rotate(3deg); } .roundNote { width:80px; height:80px; font-size:.65rem; } .feature { padding-top:60px; } }

@@ -1,0 +1,442 @@
+/* ========================================
+   SYRENA — Awwwards-Caliber Design System
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
+
+/* ---------- CSS Custom Properties ---------- */
+:root {
+  /* Oceanic Palette from User Image */
+  --celestial-canvas: #091E39;
+  --ambassador-blue: #0B345A;
+  --sea-drive: #C0D2E0;
+  --angel-falls: #A3BED3;
+  --blueberry-twist: #21567C;
+  --afloat: #79A4C0;
+  --borage: #4C81A3;
+
+  /* Transparent & Translucent Variants of the 7 Colors */
+  --celestial-canvas-90: rgba(9, 30, 57, 0.9);
+  --celestial-canvas-70: rgba(9, 30, 57, 0.7);
+  --ambassador-blue-80: rgba(11, 52, 90, 0.8);
+  --ambassador-blue-50: rgba(11, 52, 90, 0.5);
+  --ambassador-blue-30: rgba(11, 52, 90, 0.3);
+  --blueberry-twist-60: rgba(33, 86, 124, 0.6);
+  --blueberry-twist-30: rgba(33, 86, 124, 0.3);
+  --borage-40: rgba(76, 129, 163, 0.4);
+  --borage-25: rgba(76, 129, 163, 0.25);
+  --afloat-40: rgba(121, 164, 192, 0.4);
+  --afloat-20: rgba(121, 164, 192, 0.2);
+  --angel-falls-30: rgba(163, 190, 211, 0.3);
+  --angel-falls-15: rgba(163, 190, 211, 0.15);
+  --sea-drive-40: rgba(192, 210, 224, 0.4);
+  --sea-drive-20: rgba(192, 210, 224, 0.2);
+
+  /* Multi-Stop Oceanic Gradients */
+  --gradient-ocean-deep: linear-gradient(135deg, #091E39 0%, #0B345A 50%, #061528 100%);
+  --gradient-ocean-flow: linear-gradient(135deg, #091E39 0%, #0B345A 35%, #21567C 70%, #4C81A3 100%);
+  --gradient-ocean-accent: linear-gradient(135deg, #4C81A3 0%, #79A4C0 50%, #A3BED3 100%);
+  --gradient-ocean-button: linear-gradient(135deg, #4C81A3 0%, #21567C 100%);
+  --gradient-ocean-hover: linear-gradient(135deg, #79A4C0 0%, #4C81A3 100%);
+  --gradient-light-card: linear-gradient(135deg, #C0D2E0 0%, #A3BED3 60%, #79A4C0 100%);
+  --gradient-spectrum-7: linear-gradient(90deg, #091E39, #0B345A, #21567C, #4C81A3, #79A4C0, #A3BED3, #C0D2E0);
+
+  /* Brand Colors Mapped to Oceanic Palette */
+  --moonlight: #C0D2E0;
+  --frost: #A3BED3;
+  --steel: #79A4C0;
+  --storm: #21567C;
+  --oxford: #091E39;
+  --oxford-deep: #061528;
+  --white: #FFFFFF;
+  --off-white: #C0D2E0;
+  --light-blue: #0B345A;
+  --frost-light: rgba(163, 190, 211, 0.15);
+  --frost-glow: rgba(121, 164, 192, 0.4);
+  --accent-cyan: #79A4C0;
+
+  /* Semantic Aliases */
+  --bg-primary: #091E39;
+  --bg-dark: #061528;
+  --bg-section-alt: #0B345A;
+  --bg-card: rgba(11, 52, 90, 0.45);
+  --bg-card-hover: rgba(33, 86, 124, 0.65);
+  --text-primary: #FFFFFF;
+  --text-secondary: #C0D2E0;
+  --text-muted: #A3BED3;
+  --text-light: #FFFFFF;
+  --accent: #79A4C0;
+  --accent-dark: #21567C;
+  --border-subtle: rgba(163, 190, 211, 0.2);
+  --border-bright: rgba(121, 164, 192, 0.5);
+
+  /* Typography */
+  --font-heading: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-serif: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-body: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
+
+  /* Font Sizes — fluid with clamp */
+  --fs-display: clamp(3.2rem, 7vw, 6.8rem);
+  --fs-h1: clamp(2.4rem, 4.8vw, 4.4rem);
+  --fs-h2: clamp(1.9rem, 3.4vw, 3.2rem);
+  --fs-h3: clamp(1.3rem, 2.2vw, 1.8rem);
+  --fs-body: clamp(0.98rem, 1.25vw, 1.12rem);
+  --fs-small: clamp(0.82rem, 1vw, 0.92rem);
+  --fs-label: 0.78rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6.5rem;
+  --space-3xl: 9.5rem;
+
+  /* Layout */
+  --container-max: 1320px;
+  --container-narrow: 900px;
+  --nav-height: 84px;
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --duration-fast: 0.2s;
+  --duration-normal: 0.4s;
+  --duration-slow: 0.75s;
+
+  /* Borders & Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 36px;
+  --radius-pill: 9999px;
+
+  /* Shadows Infused with Oceanic Blues */
+  --shadow-sm: 0 2px 8px rgba(9, 30, 57, 0.25);
+  --shadow-md: 0 8px 30px rgba(9, 30, 57, 0.4);
+  --shadow-lg: 0 16px 50px rgba(6, 21, 40, 0.6);
+  --shadow-xl: 0 24px 80px rgba(6, 21, 40, 0.8);
+  --shadow-blue: 0 12px 40px rgba(33, 86, 124, 0.45);
+  --shadow-glow: 0 0 50px rgba(121, 164, 192, 0.35);
+}
+
+/* ---------- Lenis Recommended CSS ---------- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Ambient Grain Overlay */
+.ambient-grain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ---------- Typography ---------- */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: var(--fs-h1);
+}
+
+h2 {
+  font-size: var(--fs-h2);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+}
+
+p {
+  color: var(--text-secondary);
+  max-width: 65ch;
+  line-height: 1.75;
+}
+
+.label {
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--frost);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.75rem;
+}
+
+.label::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--frost);
+  box-shadow: 0 0 10px var(--frost-glow);
+}
+
+/* ---------- Layout Utilities ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+.section {
+  padding: var(--space-3xl) 0;
+  position: relative;
+}
+
+.section--dark {
+  background-color: var(--celestial-canvas);
+  color: var(--text-light);
+}
+
+.section--dark h1,
+.section--dark h2,
+.section--dark h3,
+.section--dark h4 {
+  color: var(--text-light);
+}
+
+.section--dark p {
+  color: var(--sea-drive);
+}
+
+.section--dark .label {
+  color: var(--angel-falls);
+}
+
+.section--alt {
+  background-color: var(--ambassador-blue);
+}
+
+.section--storm {
+  background-color: var(--blueberry-twist);
+  color: var(--text-light);
+}
+
+/* Oceanic deep blue gradient */
+.section--gradient {
+  background: radial-gradient(circle at 80% 20%, #0B345A 0%, var(--celestial-canvas) 75%);
+  color: var(--text-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.section--gradient h1,
+.section--gradient h2,
+.section--gradient h3,
+.section--gradient h4 {
+  color: var(--text-light);
+}
+
+.section--gradient p {
+  color: var(--sea-drive);
+}
+
+/* ---------- Grid Utilities ---------- */
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.grid--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid--3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+
+  .grid--4,
+  .grid--3,
+  .grid--2 {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: var(--space-2xl) 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 var(--space-sm);
+  }
+
+  .section {
+    padding: var(--space-xl) 0;
+  }
+}
+
+/* ---------- Section Header ---------- */
+.section-header {
+  margin-bottom: var(--space-xl);
+}
+
+.section-header .label {
+  margin-bottom: var(--space-sm);
+}
+
+.section-header h2 {
+  margin-bottom: var(--space-md);
+  color: #FFFFFF;
+}
+
+.section-header p {
+  font-size: var(--fs-body);
+  color: var(--sea-drive);
+}
+
+/* ---------- Glassmorphism Card ---------- */
+.glass {
+  background: rgba(11, 52, 90, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(163, 190, 211, 0.18);
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 40px rgba(9, 30, 57, 0.4);
+}
+
+/* Highlight text gradient */
+.text-gradient {
+  background: linear-gradient(135deg, #FFFFFF 0%, #C0D2E0 45%, #79A4C0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- Selection ---------- */
+::selection {
+  background-color: var(--afloat);
+  color: #091E39;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #091E39;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #21567C;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #79A4C0;
+}

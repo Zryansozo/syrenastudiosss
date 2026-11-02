@@ -1,0 +1,86 @@
+.card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1176 / 2016;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  line-height: 0;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  perspective: 1400px;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.card:focus-visible {
+  outline: 2px solid rgba(163, 190, 211, 0.9);
+  outline-offset: 6px;
+}
+
+.sourceVideo {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  pointer-events: none;
+  user-select: none;
+  transform: none;
+  transform-origin: center;
+  will-change: transform;
+  object-fit: contain;
+}
+
+.shadow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -2.8%;
+  height: 8%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse,
+    rgba(6, 23, 37, 0.25) 0%,
+    rgba(6, 23, 37, 0.10) 42%,
+    transparent 76%
+  );
+  filter: blur(8px);
+  transform: translateZ(-10px);
+}
+
+@media (max-width: 768px) {
+  .shadow {
+    bottom: -3.2%;
+    filter: blur(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transform: none !important;
+  }
+
+  .canvas {
+    transform: none !important;
+  }
+}

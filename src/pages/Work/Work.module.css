@@ -1,0 +1,50 @@
+
+.header { display:grid; grid-template-columns:1.4fr .6fr; gap:8%; align-items:center; }
+.header > div > p { margin-bottom:25px; max-width:560px; }
+.heroShell { width:100%; color:var(--cobalt); transform:rotate(18deg); padding:30px; }
+.filterRow { display:flex; align-items:center; justify-content:space-between; gap:22px; margin-bottom:40px; }
+.filters { display:flex; gap:9px; flex-wrap:wrap; }
+.filters button { border:1px solid var(--cobalt); padding:11px 18px; border-radius:40px; color:var(--white); font-size:.73rem; min-height:44px; }
+.filters button[aria-pressed="true"] { color:var(--ink); background:var(--butter); border-color:var(--ink); }
+.conceptGrid { display:grid; grid-template-columns:1fr 1fr; gap:55px 35px; align-items:start; }
+.conceptCard { padding:14px; background:var(--ice); border:1px solid var(--navy); border-radius:24px; min-width:0; text-align:left; color:var(--ink); }
+.conceptCard:nth-child(even) { margin-top:60px; background:var(--cobalt); }
+.art,.dialogArt { position:relative; background:var(--surface-image); isolation:isolate; border:1px solid var(--ink); border-radius:14px; overflow:hidden; aspect-ratio:1.22; }
+.art { transition:transform .25s,box-shadow .25s; }
+.conceptCard:hover .art { transform:rotate(-2deg) translateY(-4px); box-shadow:8px 10px 0 rgba(32,43,70,.08); }
+.art > img { mix-blend-mode:multiply; width:100%; height:100%; object-fit:cover; }
+.conceptTag { position:absolute; top:18px; left:18px; background:var(--paper); border:1px solid var(--ink); padding:6px 9px; border-radius:3px; font:500 .5rem var(--font-mono); }
+.openIcon { position:absolute; right:18px; bottom:18px; width:43px; height:43px; border-radius:50%; background:var(--butter); border:1px solid var(--ink); display:grid; place-items:center; }
+.caption { padding-inline:8px; padding-bottom:12px; display:flex; justify-content:space-between; align-items:start; gap:20px; padding-top:22px; }
+.caption h2 { font-size:1.65rem; line-height:1.1; margin-bottom:6px; }
+.caption p { font-size:.9rem; }
+.caption > span { font:500 .6rem var(--font-mono); padding-top:6px; }
+.pearlArt { width:100%; height:100%; position:relative; display:grid; place-items:center; background:var(--surface-image); isolation:isolate; }
+.pearlArt img { mix-blend-mode:multiply; width:90%; height:90%; object-fit:contain; transform:rotate(-9deg); }
+.pearlArt > span { position:absolute; left:20px; bottom:20px; font:500 .5rem var(--font-mono); }
+.webArt { position:absolute; inset:16% 8% 10%; border:1px solid var(--ink); border-radius:6px; overflow:hidden; box-shadow:7px 8px 0 rgba(32,43,70,.15); transform:rotate(4deg); background:var(--ice); }
+.browserBar { display:flex; align-items:center; gap:4px; padding:10px; background:var(--paper); border-bottom:1px solid var(--ink); }
+.browserBar i { width:5px; height:5px; border:1px solid var(--ink); border-radius:50%; }
+.browserBar > span { margin:auto; font:500 .35rem var(--font-mono); }
+.webScene { position:relative; height:calc(100% - 27px); overflow:hidden; padding:22px; background:var(--ice); }
+.webScene > span:first-child { font:500 .45rem var(--font-mono); position:relative; z-index:2; }
+.webScene > strong { position:relative; display:block; z-index:2; font:500 clamp(1.9rem,3.2vw,3.6rem)/1 var(--font-heading); letter-spacing:-.055em; margin-top:15px; }
+.webScene em { font-family:Georgia,serif; }
+.sun { position:absolute; border-radius:50%; background:var(--butter); width:75px; height:75px; right:30px; top:28px; }
+.sea { position:absolute; width:120%; height:65%; left:-10%; bottom:-15%; background:var(--cobalt); border-radius:50% 50% 0 0; transform:rotate(-6deg); }
+.shore { position:absolute; width:110%; height:50%; bottom:-23%; right:-15%; border-radius:50%; transform:rotate(-10deg); background:var(--butter); }
+.webPill { position:absolute; bottom:22px; left:22px; padding:8px 12px; border:1px solid var(--ink); border-radius:20px; background:var(--paper); font:500 .44rem var(--font-mono); z-index:2; }
+.posterArt { width:100%; height:100%; padding:60px 35px 30px; background:var(--cobalt); position:relative; }
+.posterArt > span { display:block; font:500 .5rem var(--font-mono); }
+.posterArt > strong { display:block; font:500 clamp(3rem,5.3vw,5.8rem)/.9 var(--font-heading); letter-spacing:-.065em; margin-top:24px; }
+.posterArt > strong em { font-family:Georgia,serif; }
+.posterArt > svg { position:absolute; right:15px; bottom:40px; width:150px; height:100px; color:var(--electric); transform:rotate(-15deg); }
+.posterArt > div { position:absolute; left:35px; bottom:27px; font:500 .48rem var(--font-mono); }
+.experiment { background:var(--surface-brand); border-top:1px solid var(--navy); display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:10%; }
+.experiment h2 { margin:25px 0; }
+.experiment p { margin-bottom:28px; }
+.dialogArt { border:0; border-bottom:1px solid var(--ink); border-radius:0; aspect-ratio:1.6; min-height:260px; }
+.dialogArt > img { mix-blend-mode:multiply; width:100%; height:100%; object-fit:cover; }
+@media(max-width:760px) { .header { grid-template-columns:1fr; position:relative; } .heroShell { position:absolute; top:155px; right:-70px; width:230px; opacity:.1; pointer-events:none; } .filterRow { align-items:start; flex-direction:column; } .conceptGrid { gap:35px 22px; } .conceptCard:nth-child(even) { margin-top:35px; } .posterArt { padding:55px 20px 20px; } .posterArt > strong { font-size:3rem; } .posterArt > svg { width:95px; height:65px; bottom:35px; } .posterArt > div { left:20px; font-size:.35rem; } .webScene { padding:15px; } .webScene > strong { font-size:1.7rem; } .webPill { bottom:15px; left:15px; font-size:.35rem; } .experiment { grid-template-columns:1fr; gap:45px; } }
+@media(max-width:520px) { .conceptGrid { grid-template-columns:1fr; gap:35px; } .conceptCard:nth-child(even) { margin-top:0; } .posterArt > strong { font-size:4.5rem; } .posterArt > span { font-size:.5rem; } .webScene > strong { font-size:2.3rem; } .posterArt > svg { width:120px; height:90px; } .filters { gap:7px; } .filters button { padding:10px 14px; font-size:.65rem; } .dialogArt { aspect-ratio:1.1; } }
+@media(prefers-reduced-motion:reduce) { .art { transition:none; } }

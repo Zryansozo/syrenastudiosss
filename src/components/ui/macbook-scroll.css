@@ -1,0 +1,471 @@
+/* ==========================================================================
+   Macbook Scroll 3D Component — Syrena Oceanic Atelier Palette
+   Palette:
+     sea drive:        #C2D2E0
+     celestial canvas: #091E39
+     ambassador blue:  #0B345A
+     angel falls:      #A3BED3
+     bluetwist:        #21567C
+     afloat:           #7BA1C5
+     borage:           #4C81A3
+   ========================================================================== */
+
+:root {
+  --mac-celestial: var(--cobalt);
+  --mac-ambassador: var(--ice);
+  --mac-sea-drive: var(--white);
+  --mac-angel-falls: var(--ice);
+  --mac-bluetwist: var(--navy);
+  --mac-afloat: var(--butter);
+  --mac-borage: var(--cobalt);
+}
+
+/* Outer Scroll Container — Controls Scroll Duration */
+.macbook-scroll-container {
+  position: relative;
+  width: 100%;
+  min-height: 280vh;
+  background-color: var(--mac-celestial);
+  background: radial-gradient(circle at 50% 20%, var(--ice) 0%, var(--cobalt) 60%, var(--cobalt) 100%);
+}
+
+/* Ambient oceanic light glow */
+.macbook-ambient-glow {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 850px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, rgba(255,247,204, 0.18) 0%, rgba(220,238,255, 0.12) 45%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Sticky Viewport — Keeps the entire Macbook pinned & centered while scrolling */
+.macbook-sticky-viewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: calc(var(--nav-height, 70px) + 10px);
+  padding-bottom: 40px;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+/* Title Container — Sits cleanly above the laptop at scroll 0, then fades to 0 */
+.macbook-title-wrap {
+  text-align: center;
+  padding: 0 1.5rem;
+  max-width: 850px;
+  z-index: 20;
+  flex-shrink: 0;
+  margin-bottom: 0.5rem;
+  pointer-events: auto;
+}
+
+.macbook-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 13px;
+  border-radius: 9999px;
+  background: rgba(220,238,255, 0.8);
+  border: 1px solid rgba(32,43,70, 0.35);
+  font-family: var(--font-mono, 'Space Grotesk', monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  box-shadow: 0 0 16px rgba(32,43,70, 0.06);
+  margin-bottom: 0.25rem;
+}
+
+.macbook-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--mac-afloat);
+  box-shadow: 0 0 8px var(--mac-afloat);
+  animation: macbookPulse 2s infinite ease-in-out;
+}
+
+@keyframes macbookPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.macbook-main-title {
+  font-family: var(--font-display, 'Syne', 'Outfit', sans-serif) !important;
+  font-size: clamp(1.35rem, 2.1vw, 2rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.16 !important;
+  color: var(--ink) !important;
+  letter-spacing: -0.015em !important;
+  text-transform: none !important;
+  margin: 0.1rem 0 0.25rem 0 !important;
+}
+
+.macbook-title-gradient {
+  background: var(--navy) !important;
+  -webkit-background-clip: var(--navy) !important;
+  -webkit-text-fill-color: transparent !important;
+  display: inline-block;
+}
+
+.macbook-subtitle {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(0.76rem, 0.88vw, 0.86rem);
+  line-height: 1.4;
+  color: var(--ink);
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* 3D Scene Assembly — Holds Lid + Hinge + Base firmly connected together */
+.macbook-3d-scene {
+  position: relative;
+  width: 530px;
+  perspective: 900px;
+  -webkit-perspective: 900px;
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: center center;
+}
+
+/* ─── MACBOOK LID (SCREEN) ─── */
+.macbook-lid-assembly {
+  position: relative;
+  width: 530px;
+  height: 315px;
+  border-radius: 14px 14px 3px 3px;
+  background: #050F1E;
+  border: 1.5px solid rgba(32,43,70, 0.35);
+  box-shadow: 0 15px 45px rgba(32,43,70, 0.2), 0 0 30px rgba(32,43,70, 0.045);
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+  z-index: 10;
+  overflow: hidden;
+  margin-bottom: -1px;
+  /* Hardware-accelerated smooth rotation */
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Webcam Bezel dot */
+.macbook-lid-assembly::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--cobalt);
+  border: 0.5px solid var(--mac-afloat);
+  box-shadow: 0 0 4px var(--mac-afloat);
+  z-index: 25;
+}
+
+/* Screen Display Viewport (The Window where the whole image scrolls) */
+.macbook-screen-viewport {
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  right: 11px;
+  bottom: 11px;
+  border-radius: 7px;
+  background: var(--cobalt);
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(32,43,70, 0.2), 0 0 1px rgba(32,43,70, 0.09);
+  z-index: 5;
+}
+
+/* Scroll Track that moves the whole image down */
+.macbook-screen-scroll-track {
+  width: 100%;
+  position: relative;
+  will-change: transform;
+}
+
+.macbook-full-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 4px;
+}
+
+/* ─── HINGE CONNECTOR ─── */
+.macbook-hinge-connector {
+  position: relative;
+  width: 410px;
+  height: 7px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #050F1E 0%, var(--ice) 60%, #050F1E 100%);
+  border: 1px solid rgba(32,43,70, 0.4);
+  box-shadow: 0 2px 6px rgba(32,43,70, 0.2);
+  z-index: 8;
+  margin-top: -3px;
+  margin-bottom: -3px;
+}
+
+/* ─── MACBOOK BASE (CHASSIS & KEYBOARD) ─── */
+.macbook-base-chassis {
+  position: relative;
+  width: 530px;
+  height: 230px;
+  border-radius: 4px 4px 18px 18px;
+  background: linear-gradient(160deg, var(--cobalt) 0%, var(--ice) 45%, #07182C 100%);
+  border: 1.5px solid rgba(32,43,70, 0.3);
+  box-shadow: 0 35px 85px rgba(32,43,70, 0.2),
+    0 0 45px rgba(32,43,70, 0.075),
+    inset 0 1px 1px rgba(32,43,70, 0.105),
+    inset 0 -2px 6px rgba(32,43,70, 0.2);
+  transform: rotateX(55deg);
+  transform-origin: top center;
+  transform-style: preserve-3d;
+  z-index: 5;
+  overflow: hidden;
+  padding: 7px 10px 12px 10px;
+  margin-bottom: 0;
+  /* No negative margin — spacing handled by section */
+}
+
+/* Keyboard Section Layout */
+.macbook-keyboard-section {
+  display: flex;
+  width: 100%;
+  height: 135px;
+  align-items: stretch;
+}
+
+/* Speaker Columns */
+.macbook-speaker-col {
+  width: 11%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.macbook-speaker-grid {
+  height: 115px;
+  width: 100%;
+  background-image: radial-gradient(circle, var(--ice) 0.6px, transparent 0.6px);
+  background-size: 3px 3px;
+  opacity: 0.75;
+}
+
+/* Keypad Tray */
+.macbook-keypad-col {
+  width: 78%;
+  padding: 0 3px;
+}
+
+.macbook-keypad {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  background: #05101E;
+  border: 1px solid rgba(32,43,70, 0.4);
+  box-shadow: inset 0 2px 8px rgba(32,43,70, 0.2);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.macbook-key-row {
+  display: flex;
+  width: 100%;
+  gap: 2px;
+  flex: 1;
+  align-items: center;
+}
+
+/* Keycaps */
+.macbook-kbtn-wrap {
+  flex: 1;
+  height: 100%;
+  border-radius: 3px;
+  padding: 0.5px;
+  display: flex;
+}
+
+.macbook-kbtn-backlit {
+  background: rgba(255,247,204, 0.22);
+  box-shadow: 0 0 5px rgba(32,43,70, 0.09), 0 0 1px rgba(32,43,70, 0.12);
+}
+
+.macbook-kbtn-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 2.5px;
+  background: var(--ice);
+  border: 0.5px solid rgba(32,43,70, 0.4);
+  box-shadow: inset 0 1px 0 rgba(32,43,70, 0.045), inset 0 -1px 2px rgba(32,43,70, 0.2);
+  user-select: none;
+}
+
+.macbook-kbtn-inner:hover {
+  background: var(--butter);
+  border-color: rgba(32,43,70, 0.4);
+  box-shadow: inset 0 1px 0 rgba(32,43,70, 0.09), 0 0 6px rgba(32,43,70, 0.105);
+}
+
+.macbook-kbtn-label {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 4.8px !important;
+  line-height: 1 !important;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--ink);
+}
+
+.macbook-kbtn-backlit .macbook-kbtn-label {
+  color: var(--ink);
+  text-shadow: none;
+}
+
+.macbook-keypad svg,
+.macbook-kbtn-inner svg {
+  width: 6px !important;
+  height: 6px !important;
+  max-width: 6px !important;
+  max-height: 6px !important;
+  display: block;
+}
+
+.macbook-touchid-outer {
+  height: 0.85rem;
+  width: 0.85rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, var(--cobalt) 0%, var(--ice) 50%, var(--cobalt) 100%);
+  padding: 1px;
+}
+
+.macbook-touchid-inner {
+  height: 100%;
+  width: 100%;
+  border-radius: 9999px;
+  background: #050F1E;
+}
+
+/* Palm Rest Area (Trackpad + Badge) */
+.macbook-palm-rest {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 75px;
+  padding: 3px 12px 0 12px;
+  position: relative;
+}
+
+/* Trackpad */
+.macbook-trackpad {
+  margin: 0 auto;
+  height: 68px;
+  width: 170px;
+  border-radius: 9px;
+  background: linear-gradient(180deg, rgba(220,238,255, 0.3) 0%, rgba(125,167,217, 0.5) 100%);
+  border: 1px solid rgba(32,43,70, 0.22);
+  box-shadow: inset 0 1px 3px rgba(32,43,70, 0.15), 0 1px 0 rgba(32,43,70, 0.045);
+  transition: border-color 0.2s ease;
+}
+
+.macbook-trackpad:hover {
+  border-color: rgba(32,43,70, 0.4);
+}
+
+/* Front notch */
+.macbook-front-notch {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  height: 4.5px;
+  width: 70px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background: linear-gradient(to top, var(--ice), var(--cobalt));
+  border-top: 1px solid rgba(32,43,70, 0.3);
+}
+
+/* Palm rest badge */
+.macbook-palm-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 14px;
+  z-index: 10;
+}
+
+.syrena-badge-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 4px 12px rgba(9,30,57, 0.6));
+}
+
+.syrena-badge-wrap:hover {
+  transform: rotate(0deg) scale(1.1) !important;
+  filter: drop-shadow(0 0 18px rgba(123,161,197, 0.6));
+}
+
+/* Bottom shadow gradient */
+.macbook-bottom-gradient {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  height: 5rem;
+  width: 100%;
+  background: linear-gradient(to top, var(--cobalt) 0%, rgba(125,167,217, 0.8) 50%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Seamless bottom fade for macbook section */
+.macbook-scroll-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, transparent 0%, var(--cobalt) 100%);
+  pointer-events: none;
+  z-index: 3;
+}

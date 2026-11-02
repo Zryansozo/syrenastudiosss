@@ -1,0 +1,192 @@
+.root {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1176 / 2016;
+  min-width: 0;
+  overflow: visible;
+  isolation: isolate;
+  perspective: 1400px;
+}
+
+.trigger {
+  translate: var(--puppet-x, 0px) var(--puppet-y, 0px);
+  rotate: var(--puppet-roll, 0deg);
+  transform-origin: 50% 15%;
+  position: absolute;
+  z-index: 4;
+  top: calc(50% + var(--object-lift));
+  left: 50%;
+  width: var(--object-size);
+  max-width: 360px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  transform: translate3d(calc(-50% + var(--mx, 0px)), calc(-50% + var(--my, 0px)), 0)
+    rotate(var(--object-rotation))
+    rotateX(var(--rx, 0deg))
+    rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  transition:
+    top 520ms cubic-bezier(0.16, 1, 0.3, 1),
+    left 520ms cubic-bezier(0.16, 1, 0.3, 1),
+    width 520ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 260ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    filter 260ms ease,
+    opacity 180ms ease;
+  will-change: transform, filter, opacity, top, left, width;
+  outline: none;
+}
+
+.object {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 62%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform: translateZ(24px);
+  transform-origin: center;
+  filter:
+    drop-shadow(0 24px 20px rgba(2,13,29, 0.4))
+    drop-shadow(0 7px 8px rgba(2,13,29, 0.22));
+  transition: transform 280ms cubic-bezier(0.2, 0.75, 0.25, 1), filter 280ms ease;
+}
+
+.objectShadow {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: -8%;
+  width: 72%;
+  height: 9%;
+  transform: translateX(-50%) translateZ(-8px);
+  border-radius: 50%;
+  background: rgba(0,7,18, 0.34);
+  filter: blur(12px);
+  opacity: 0.72;
+  transition: transform 280ms ease, opacity 280ms ease, width 280ms ease;
+  pointer-events: none;
+}
+
+.trigger[data-hovered='true'] {
+  filter: brightness(1.035);
+}
+
+.trigger[data-hovered='true'] .object {
+  transform: translateZ(34px) scale(1.045);
+  filter:
+    drop-shadow(0 30px 24px rgba(2,13,29, 0.44))
+    drop-shadow(0 9px 10px rgba(2,13,29, 0.22));
+}
+
+.trigger[data-hovered='true'] .objectShadow {
+  width: 78%;
+  opacity: 0.58;
+  transform: translateX(-50%) translateZ(-12px) scaleX(1.07);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .trigger:hover .object {
+    animation: marineJitter 420ms ease-out;
+  }
+}
+
+@keyframes marineJitter {
+  0% { transform: translateZ(34px) scale(1.045) rotate(0deg); }
+  18% { transform: translate3d(-2px, 1px, 34px) scale(1.055) rotate(-0.8deg); }
+  37% { transform: translate3d(3px, -2px, 36px) scale(1.065) rotate(0.75deg); }
+  58% { transform: translate3d(-2px, 0px, 34px) scale(1.055) rotate(-0.45deg); }
+  78% { transform: translate3d(1px, -1px, 34px) scale(1.05) rotate(0.25deg); }
+  100% { transform: translateZ(34px) scale(1.045) rotate(0deg); }
+}
+
+.trigger:focus-visible {
+  outline: 2px solid rgba(32,43,70, 0.4);
+  outline-offset: 10px;
+  border-radius: 28px;
+}
+
+/* Once a card is open, the same physical object remains visible as the
+   toggle. It moves to the upper-right edge so the finished card remains legible. */
+.root[data-state='opening'] .trigger,
+.root[data-state='playing'] .trigger,
+.root[data-state='complete'] .trigger {
+  translate: none;
+  rotate: none;
+  top: 9%;
+  left: 87%;
+  width: min(18%, 104px);
+  opacity: 0.98;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) rotate(-7deg) scale(0.94);
+}
+
+.root[data-state='opening'] .objectShadow,
+.root[data-state='playing'] .objectShadow,
+.root[data-state='complete'] .objectShadow {
+  opacity: 0.35;
+  width: 92%;
+}
+
+.root[data-state='opening'] .videoCanvas,
+.root[data-state='playing'] .videoCanvas,
+.root[data-state='complete'] .videoCanvas {
+  opacity: 1;
+}
+
+.videoCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  background: transparent;
+  filter:
+    drop-shadow(0 20px 30px rgba(2,13,29, 0.28))
+    drop-shadow(0 6px 10px rgba(2,13,29, 0.16));
+  transition: opacity 220ms ease;
+}
+
+.root[data-state='error'] .trigger {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.root[data-state='error'] .videoCanvas {
+  opacity: 0;
+}
+
+@media (max-width: 768px) {
+  .trigger {
+    width: min(var(--object-size), 70%);
+  }
+
+  .root[data-state='opening'] .trigger,
+  .root[data-state='playing'] .trigger,
+  .root[data-state='complete'] .trigger {
+    width: min(22%, 84px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger,
+  .object,
+  .objectShadow,
+  .videoCanvas {
+    transition-duration: 120ms;
+  }
+
+  .trigger:hover .object {
+    animation: none;
+  }
+}

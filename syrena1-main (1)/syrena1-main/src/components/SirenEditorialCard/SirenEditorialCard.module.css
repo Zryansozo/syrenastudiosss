@@ -1,0 +1,150 @@
+.cardPerspective {
+  perspective: 1200px;
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+.card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(163, 190, 211, 0.25);
+  background: rgba(9, 30, 57, 0.75);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(121, 164, 192, 0.15);
+  transform-style: preserve-3d;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: rgba(121, 164, 192, 0.6);
+  box-shadow: 
+    0 30px 70px rgba(0, 0, 0, 0.7),
+    0 0 50px rgba(121, 164, 192, 0.3);
+}
+
+.cardCursorGlow {
+  position: absolute;
+  top: -150px;
+  left: -150px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(100, 210, 255, 0.25) 0%, transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+
+.imageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.06);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover .image {
+  transform: scale(1.12);
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(2, 11, 24, 0.95) 0%,
+    rgba(2, 11, 24, 0.3) 40%,
+    transparent 80%
+  );
+  pointer-events: none;
+}
+
+/* ═══════════ Badges & Metadata ═══════════ */
+.topBadge {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 8px;
+  background: rgba(2, 11, 24, 0.65);
+  border: 1px solid rgba(139, 163, 197, 0.3);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-pill);
+  z-index: 4;
+}
+
+.badgeText {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--moonlight);
+}
+
+.bottomMeta {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  z-index: 4;
+}
+
+.metaLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaTitle {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--moonlight);
+}
+
+.metaSubtitle {
+  font-size: 0.85rem;
+  color: var(--frost);
+}
+
+.depthPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(100, 210, 255, 0.12);
+  border: 1px solid rgba(100, 210, 255, 0.3);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  backdrop-filter: blur(10px);
+}
+
+.sparkleIcon {
+  animation: spinSlow 8s linear infinite;
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

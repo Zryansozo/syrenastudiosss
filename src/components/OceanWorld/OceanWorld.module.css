@@ -1,0 +1,26 @@
+.oceanWorld {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--surface-brand);
+}
+.motionToggle {
+  position: absolute;
+  top: 16px;
+  right: clamp(16px, 3vw, 48px);
+  z-index: 3;
+  padding: 6px 10px;
+  border: 1px solid var(--navy);
+  border-radius: 3px;
+  color: var(--ink);
+  background: var(--butter);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.motionToggle:focus-visible { outline: 2px solid rgba(32,43,70, 0.26); outline-offset: 4px; }
+
+/* Ice & Butter palette */
+.oceanWorld { background: var(--surface-brand); }
+.motionToggle { background: var(--butter); color: var(--ink); border-color: var(--navy); border-radius: var(--radius-pill); }
+.motionToggle:focus-visible { outline-color: var(--navy); }

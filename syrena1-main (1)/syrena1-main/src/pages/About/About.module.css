@@ -1,0 +1,312 @@
+/* ========================================
+   ABOUT PAGE — AWWWARDS CALIBER STYLING
+   ======================================== */
+
+/* ─── Page Header ─── */
+.pageHeader {
+  padding-top: calc(var(--nav-height) + var(--space-3xl));
+  padding-bottom: var(--space-3xl);
+  background: radial-gradient(circle at 50% 20%, #0B345A 0%, var(--oxford) 80%);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.headerGlow1 {
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(121, 164, 192, 0.2) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.headerGlow2 {
+  position: absolute;
+  bottom: 0;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(76, 129, 163, 0.2) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.headerInner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-md);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.titleHighlight {
+  background: linear-gradient(135deg, #FFFFFF 0%, #A3BED3 60%, #79A4C0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pageDesc {
+  max-width: 650px;
+  margin: 0 auto;
+  font-size: var(--fs-body);
+  line-height: 1.8;
+  color: var(--sea-drive);
+}
+
+/* ─── Story ─── */
+.storyGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3xl);
+  align-items: center;
+}
+
+.storyImageCol {
+  position: relative;
+}
+
+.storyImage {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  height: 540px;
+  border: 1px solid rgba(163, 190, 211, 0.25);
+  box-shadow: var(--shadow-xl);
+}
+
+.storyFloatBadge {
+  position: absolute;
+  bottom: -24px;
+  right: -20px;
+  background: rgba(11, 52, 90, 0.88);
+  backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(163, 190, 211, 0.35);
+  box-shadow: 0 20px 45px rgba(6, 21, 40, 0.7);
+  padding: 16px 24px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.badgeNumber {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.badgeText {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--afloat);
+}
+
+.storyContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.storyContent h2 {
+  font-size: var(--fs-h2);
+  color: #FFFFFF;
+}
+
+.storyContent p {
+  line-height: 1.8;
+  color: var(--sea-drive);
+}
+
+/* ─── Milestones Timeline ─── */
+.timelineSection {
+  background: var(--celestial-canvas);
+  padding: var(--space-3xl) 0;
+}
+
+.milestonesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+
+.milestoneCard {
+  padding: var(--space-xl) var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: rgba(11, 52, 90, 0.45);
+  border: 1px solid rgba(163, 190, 211, 0.22);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+}
+
+.milestoneCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(6, 21, 40, 0.8), 0 0 25px rgba(121, 164, 192, 0.2);
+  border-color: rgba(121, 164, 192, 0.6);
+}
+
+.milestoneYear {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--afloat);
+  margin-bottom: var(--space-sm);
+}
+
+.milestoneTitle {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: var(--space-xs);
+}
+
+.milestoneDesc {
+  font-size: var(--fs-small);
+  color: var(--sea-drive);
+  line-height: 1.65;
+}
+
+/* ─── Values ─── */
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+
+.valueCard {
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+  background: rgba(11, 52, 90, 0.45);
+  border: 1px solid rgba(163, 190, 211, 0.22);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius-lg);
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+}
+
+.valueCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(6, 21, 40, 0.8), 0 0 25px rgba(121, 164, 192, 0.2);
+  border-color: rgba(121, 164, 192, 0.6);
+}
+
+.valueIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: rgba(76, 129, 163, 0.25);
+  border: 1px solid rgba(163, 190, 211, 0.25);
+  color: var(--afloat);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-md);
+  transition: all 0.4s var(--ease-out);
+}
+
+.valueCard:hover .valueIcon {
+  background: var(--afloat);
+  color: var(--celestial-canvas);
+  border-color: var(--afloat);
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(121, 164, 192, 0.5);
+}
+
+.valueTitle {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: var(--space-xs);
+}
+
+.valueDesc {
+  font-size: var(--fs-small);
+  color: var(--sea-drive);
+  line-height: 1.7;
+}
+
+/* ─── Stats ─── */
+.statsSection {
+  padding: var(--space-3xl) 0;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+
+/* ─── Team ─── */
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+
+/* ─── CTA Banner ─── */
+.ctaBanner {
+  background: radial-gradient(circle at 50% 50%, #0B345A 0%, var(--celestial-canvas) 80%);
+  color: var(--sea-drive);
+  padding: var(--space-3xl) 0;
+  text-align: center;
+}
+
+.ctaInner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.ctaInner h2 {
+  font-family: var(--font-heading);
+  font-size: var(--fs-h2);
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: var(--space-md);
+}
+
+.ctaInner p {
+  color: var(--sea-drive);
+  margin: 0 auto var(--space-xl);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .valuesGrid,
+  .milestonesGrid,
+  .teamGrid,
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .storyGrid {
+    grid-template-columns: 1fr;
+  }
+  .storyFloatBadge {
+    right: 10px;
+    bottom: -16px;
+  }
+  .valuesGrid,
+  .milestonesGrid,
+  .teamGrid,
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}

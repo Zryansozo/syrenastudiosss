@@ -1,0 +1,38 @@
+.cinematicText {
+  display: inline-block;
+  perspective: 1000px;
+  will-change: transform, opacity, filter;
+}
+
+.lineWrapper {
+  overflow: hidden;
+  display: block;
+  padding-bottom: 0.12em;
+}
+
+.inlineWrapper {
+  overflow: hidden;
+  display: inline-flex;
+  vertical-align: top;
+  padding-bottom: 0.1em;
+}
+
+.word {
+  display: inline-block;
+  white-space: pre;
+  transform-origin: center bottom;
+  will-change: transform, opacity, filter;
+}
+
+.char {
+  display: inline-block;
+  transform-origin: center bottom;
+  will-change: transform, opacity;
+}
+
+.highlight {
+  background: var(--navy);
+  -webkit-background-clip: var(--navy);
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
