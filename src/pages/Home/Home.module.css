@@ -43,10 +43,10 @@
 @media(max-width:480px) { .heroInner { width:calc(100% - 44px); } .heroCopy :global(.studio-eyebrow) { font-size:.65rem; } .postcard { transform:rotate(3deg); } .roundNote { width:80px; height:80px; font-size:.65rem; } .feature { padding-top:60px; } }
 /* Syrena sunset hero */
 .hero { height: auto; min-height: max(880px, 100svh); max-height: none; display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden; padding: clamp(290px, 31vh, 345px) 24px 80px; background: #091E39; isolation: isolate; }
-.heroScene { position: absolute; z-index: -2; inset: -43% 0 0; height: 143%; overflow: hidden; }
+.heroScene { position: absolute; z-index: -2; inset: -25% 0 0; height: 125%; overflow: hidden; }
 .heroScene img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center center; }
 .heroBottomFade { z-index: -1; height: 27%; background: linear-gradient(to bottom, transparent, rgba(9,30,57,.18) 35%, var(--surface-brand) 100%); }
-.heroSideLabels { position: absolute; z-index: 2; top: clamp(206px, 25vh, 245px); left: clamp(25px, 5vw, 88px); right: clamp(25px, 5vw, 88px); display: flex; justify-content: space-between; color: #fff; text-shadow: 0 1px 5px #091E39; font: 800 10px var(--font-heading,sans-serif); letter-spacing: .13em; }
+.heroSideLabels { position: absolute; z-index: 2; top: clamp(206px, 25vh, 245px); left: clamp(25px, 5vw, 88px); right: clamp(25px, 5vw, 88px); display: flex; justify-content: space-between; color: #091E39; text-shadow: 0 1px 5px rgba(255,255,255,.75); font: 800 10px var(--font-heading,sans-serif); letter-spacing: .13em; }
 .heroComposition { position: relative; width: min(1450px, 100%); margin: 0 auto; display: grid; grid-template-columns: 1fr minmax(0,580px) 1fr; align-items: center; }
 .postcard { grid-column: 2; min-width: 0; position: relative; z-index: 3; }
 .heroNote { position: absolute; left: clamp(0px, 11vw, 175px); top: 31%; color: #fff; text-shadow: 0 2px 8px #091E39; font: italic 500 clamp(16px,1.7vw,24px)/1.42 Georgia,serif; transform: rotate(-7deg); z-index: 4; }
@@ -68,9 +68,10 @@
 }
 @media (max-width: 850px) {
  .hero { min-height: 850px; padding-top: 320px; }
- .heroScene { top: -30%; height: 130%; }
+ .heroScene { top: -25%; height: 125%; }
+ .heroScene img { object-position: 32% center; }
  .heroSideLabels { top: 234px; font-size: 8px; }
- .heroComposition { display: block; width: min(650px,100%); padding-top: 55px; }
+ .heroComposition { display: block; width: min(650px,100%); padding-top: 85px; }
  .postcard { width: min(100%,590px); margin: 0 auto; }
  .heroNote { top: 0; left: 2%; font-size: 15px; }.heroNote svg { width: 55px; margin: 0 0 0 35px; }
  .heroSeal { top: 0; right: 2%; width: 75px; }
@@ -79,10 +80,10 @@
 }
 @media (max-width: 520px) {
  .hero { min-height: 790px; padding: 290px 14px 70px; }
- .heroScene { top: -31%; height: 131%; }
+ .heroScene { top: -25%; height: 125%; }
  .heroSideLabels { top: 212px; left: 18px; right: 18px; gap: 20px; font-size: 6px; }
  .heroSideLabels span:last-child { text-align: right; max-width: 145px; }
- .heroComposition { padding-top: 62px; }
+ .heroComposition { padding-top: 76px; }
  .heroNote { font-size: 12px; left: 5%; }.heroNote svg { width: 46px; }
  .heroSeal { right: 5%; width: 64px; }
  .heroIntro { margin-top: 30px; }

@@ -10,7 +10,7 @@ export default function Home() {
  return <PageTransition><div className={'studio-page '+styles.page}>
   <section className={styles.hero} aria-label="Syrena Studios"><h1 id="home-title" className={styles.srOnly}>Syrena Studios</h1>
           <div className={styles.heroScene} aria-hidden="true">
-            <img src="/images/syrena-hero-background.png" alt="" fetchPriority="high" />
+            <img src="/images/syrena-lighthouse-hero.png" alt="" fetchPriority="high" />
           </div>
           <div className={styles.heroBottomFade} aria-hidden="true" />
           <div className={styles.heroSideLabels} aria-hidden="true">
