@@ -31,7 +31,7 @@ export default function Navbar() {
   );
 
   return (
-    <><a href="#page-content" className={styles.skip}>Skip to content</a><header className={[styles.header, scrolled || location.pathname !== '/' ? styles.scrolled : ''].join(' ')}>
+    <><a href="#page-content" className={styles.skip}>Skip to content</a><header className={[styles.header, scrolled || location.pathname !== '/' ? styles.scrolled : '', location.pathname === '/contact' ? styles.contactHeader : ''].join(' ')}>
       <nav className={styles.nav} aria-label="Main navigation">
         <div className={styles.left}>{leftLinks.map(navLink)}</div>
         <Link className={styles.wordmark} to="/" onClick={() => setOpen(false)} aria-label="Syrena, home">SYRENA</Link>
