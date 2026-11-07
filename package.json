@@ -37,5 +37,13 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zryansozo/syrenastudiosss.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Zryansozo/syrenastudiosss/issues"
+  },
+  "homepage": "https://github.com/Zryansozo/syrenastudiosss#readme"
 }

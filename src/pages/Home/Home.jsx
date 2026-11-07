@@ -1,10 +1,11 @@
 ﻿import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import PageTransition from '../../components/PageTransition/PageTransition';
 import PostCard3D from '../../components/PostCard3D/PostCard3D';
 import { Action, Eyebrow, SeaMark, TideLine, StudioCTA, CapabilityCards, TideMixer } from '../../components/Studio/StudioKit';
 import styles from './Home.module.css';
 import CalendarBlog from '../../components/CalendarBlog/CalendarBlog';
+import ProjectSwitch from '../../components/ProjectSwitch/ProjectSwitch';
 
 export default function Home() {
  return <PageTransition><div className={'studio-page '+styles.page}>
@@ -41,7 +42,7 @@ export default function Home() {
   </section>
   <section className="studio-wrap studio-section"><div className="studio-split-heading"><div><Eyebrow>WHAT WE’RE HERE TO CREATE</Eyebrow><h2>A little depth.<br/><em>A lot of possibility.</em></h2></div><p>Start with one idea or connect a few. We’ll help shape a direction that makes sense for your next chapter.</p></div><CapabilityCards/></section>
   <section className={'studio-wrap studio-section '+styles.play}><TideLine/><div><Eyebrow>THE CREATIVE TIDE POOL</Eyebrow><h2>Room to explore.<br/><em>Space to play.</em></h2><p>Colour, movement, and unexpected details can give an idea its own personality. Here’s a small experiment from our studio playground.</p><Action to="/work" secondary>Explore the playground</Action><div className={styles.pearlNote}><SeaMark kind="shell"/><span>CONCEPTS, CURIOSITIES &<br/>THINGS THAT COULD BE.</span></div></div><TideMixer/></section>
-  <section className={'studio-wrap studio-section '+styles.feature}><Link to="/work" className={styles.conceptImage}><img src="/images/studio-daydream.png" alt="Illustrative Daydream sparkling-water packaging in coastal pastel colours" width="1536" height="1024" loading="lazy"/><span>STUDIO CONCEPT / NOT CLIENT WORK <ArrowUpRight size={18}/></span></Link><div className={styles.featureCopy}><Eyebrow>FRESH FROM THE PLAYGROUND</Eyebrow><h2>A brighter<br/><em>kind of daydream.</em></h2><p>A fictional seaside drinks brand, explored through colour, packaging, and a sun-soaked personality. An idea of what we could create—not a claim about past work.</p><Action to="/work" secondary>See the concept studies</Action></div></section>
+  <ProjectSwitch />
   <CalendarBlog/>
   <StudioCTA/>
   </div>
