@@ -31,8 +31,7 @@ export default function Footer() {
   }, [location.pathname, location.hash, location.key]);
 
   return <footer className={styles.footer}>
-    {/* Recreate existing WebGL scenes when the artwork or palette changes. */}
-    <ReferencePaperWave key="paper-navy-7" />
+    <ReferencePaperWave />
     <div className={styles.content}>
       <Link to="/" className={styles.brand} aria-label="Syrena home">
         <img src="/artwork/reference-paper/wave-mark.svg" width="76" height="77" alt="" />

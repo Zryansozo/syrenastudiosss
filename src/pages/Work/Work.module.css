@@ -1,7 +1,7 @@
 .hero,
 .signoff {
   color: var(--ice);
-  background: var(--navy);
+  background: var(--surface-brand);
 }
 
 .hero {

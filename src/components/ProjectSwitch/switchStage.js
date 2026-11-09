@@ -1,13 +1,10 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { paintStartup } from './startup';
+import { paintStartup, STARTUP_DURATION } from './startup';
+import { createPixelWorld, STATION_SPACING } from './pixelWorld';
 
-const INK = '#183044';
-const PAPER = '#f4f0e5';
-
-// Both the handheld and the world rendered onto its screen are real 3D scenes.
-// The screen uses a render target, so it keeps its perspective as the console tilts.
+// The handheld is 3D; a continuously animated pixel world is mapped onto its glass.
 export function createSwitchStage(host, projects, onAction, onHover) {
   const tokens = getComputedStyle(host);
   const token = (name, fallback) => tokens.getPropertyValue(name).trim() || fallback;
@@ -46,7 +43,6 @@ export function createSwitchStage(host, projects, onAction, onHover) {
   scene.add(rim);
 
   const resources = new Set();
-  const pendingImages = [];
   const hitTargets = [];
   const buttonGroups = [];
   const root = new THREE.Group();
@@ -60,7 +56,12 @@ export function createSwitchStage(host, projects, onAction, onHover) {
   let frame = 0;
   let lastTime = 0;
   let elapsed = 0;
-  let galleryX = 0;
+  let cameraOffset = 0;
+  let travelFrom = 0;
+  let travelTarget = 0;
+  let travelElapsed = 1;
+  let direction = 1;
+  let motionOverride = false;
   let pointerX = 0;
   let pointerY = 0;
   let pressedUntil = 0;
@@ -69,7 +70,7 @@ export function createSwitchStage(host, projects, onAction, onHover) {
   let screenDirty = true;
   let startup = 'done';
   let startupTime = 0;
-  let lastStartupPaint = -Infinity;
+  let lastScreenPaint = -Infinity;
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
@@ -148,9 +149,7 @@ export function createSwitchStage(host, projects, onAction, onHover) {
   box(root, .045, 4.84, .46, .015, seam, -4.79, 0, 0);
   box(root, .045, 4.84, .46, .015, seam, 4.79, 0, 0);
 
-  const target = new THREE.WebGLRenderTarget(1440, 760, { depthBuffer: true });
-  target.texture.colorSpace = THREE.SRGBColorSpace;
-  const screenMat = new THREE.MeshBasicMaterial({ map: target.texture, toneMapped: false });
+  const screenMat = new THREE.MeshBasicMaterial({ toneMapped: false });
   resources.add(screenMat);
   const screen = plane(root, 8.32, 4.39, screenMat, 0, 0, .456);
   screen.userData.action = 'screen';
@@ -246,147 +245,18 @@ export function createSwitchStage(host, projects, onAction, onHover) {
   const shadow = plane(scene, 13, 2.1, basicTexture(shadowTexture, { transparent: true, depthWrite: false }), 0, -3.09, -1.5);
   shadow.rotation.x = -.3;
 
-  // Build the artwork once, shared by the gallery exhibits and its overview menu.
-  const artTextures = projects.map((project, index) => {
-    let artImage = null;
-    const texture = canvasTexture(1024, 730, () => {});
-    const art = texture.image;
-    const ctx = art.getContext('2d');
-    function paint() {
-      if (disposed) return;
-      ctx.fillStyle = PAPER;
-      ctx.fillRect(0, 0, 1024, 730);
-      ctx.fillStyle = INK;
-      ctx.textAlign = 'left';
-      ctx.font = '600 17px monospace';
-      ctx.fillText(`SYRENA STUDIO CONCEPT / ${String(index + 1).padStart(2, '0')}`, 35, 36);
-      if (artImage) {
-        const scale = Math.max(960 / artImage.width, 493 / artImage.height);
-        ctx.save();
-        ctx.beginPath();
-        ctx.rect(32, 59, 960, 493);
-        ctx.clip();
-        ctx.drawImage(artImage, 32 + (960 - artImage.width * scale) / 2, 59 + (493 - artImage.height * scale) / 2, artImage.width * scale, artImage.height * scale);
-        ctx.restore();
-      } else if (project.id === 'tideline') {
-        ctx.fillStyle = '#bfd5dc'; ctx.fillRect(32, 59, 960, 493);
-        ctx.fillStyle = '#edbb88'; ctx.beginPath(); ctx.arc(779, 214, 75, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#6a969e'; ctx.beginPath(); ctx.moveTo(32, 400); ctx.quadraticCurveTo(400, 290, 992, 400); ctx.lineTo(992, 552); ctx.lineTo(32, 552); ctx.fill();
-        ctx.fillStyle = '#f4dfaf'; ctx.beginPath(); ctx.moveTo(32, 500); ctx.quadraticCurveTo(650, 400, 992, 530); ctx.lineTo(992, 552); ctx.lineTo(32, 552); ctx.fill();
-        ctx.fillStyle = INK; ctx.font = '15px monospace'; ctx.fillText('STAY A LITTLE LONGER', 85, 120);
-        ctx.font = 'italic 76px Georgia'; ctx.fillText('Somewhere', 85, 252); ctx.fillText('by the sea.', 85, 334);
-      } else {
-        ctx.fillStyle = '#dfad99'; ctx.fillRect(32, 59, 960, 493);
-        ctx.strokeStyle = '#b66e5e'; ctx.lineWidth = 2;
-        for (let y = 80; y < 560; y += 25) {
-          ctx.beginPath(); ctx.moveTo(32, y); ctx.bezierCurveTo(330, y - 60, 650, y + 60, 992, y); ctx.stroke();
-        }
-        ctx.fillStyle = INK; ctx.font = 'bold 104px Georgia'; ctx.fillText('Good', 105, 260);
-        ctx.font = 'italic 110px Georgia'; ctx.fillText('currents.', 105, 370);
-        ctx.font = '18px monospace'; ctx.fillText('LESS NOISE. MORE OCEAN.', 110, 487);
-      }
-      ctx.fillStyle = INK;
-      ctx.font = '600 54px Arial'; ctx.fillText(project.title, 34, 625);
-      ctx.font = '20px monospace'; ctx.fillStyle = '#5f787c'; ctx.fillText(project.category.toUpperCase(), 36, 677);
-      ctx.fillStyle = '#c27061'; ctx.font = '38px Arial'; ctx.fillText('↗', 938, 633);
-      texture.needsUpdate = true;
-      screenDirty = true;
-      requestFrame();
-    }
-    paint();
-    if (project.image) {
-      const image = new Image();
-      pendingImages.push(image);
-      image.onload = () => { artImage = image; paint(); };
-      image.onerror = () => { image.onload = null; image.onerror = null; };
-      image.src = project.image.src;
-    }
-    return texture;
-  });
-
-  const gallery = new THREE.Scene();
-  gallery.background = new THREE.Color('#cadcda');
-  gallery.fog = new THREE.Fog('#cadcda', 14, 42);
-  gallery.add(new THREE.HemisphereLight('#fff1d6', '#6d9b9e', 3));
-  const sun = new THREE.DirectionalLight('#fff4db', 3.5);
-  sun.position.set(-5, 12, 9);
-  gallery.add(sun);
-  const galleryCamera = new THREE.PerspectiveCamera(44, 1440 / 760, .1, 80);
-  const deck = box(gallery, 130, .3, 27, .1, material('#6b9699', { roughness: .65 }), 27, -2.1, 2);
-  deck.rotation.z = 0;
-  // Long deck lines and open arches establish a continuous, explorable room.
-  for (let z = -8; z < 14; z += 1.4) box(gallery, 130, .012, .025, .005, material('#9cb9b5'), 27, -1.94, z);
-  const exhibitFrames = [];
-  const archMat = material('#e8dac1', { roughness: .8 });
-  const plinthMat = material('#a7bfba', { roughness: .65 });
-  projects.forEach((project, index) => {
-    const x = index * 11;
-    box(gallery, 7.03, 5.1, .2, .17, material(index % 2 ? '#c9b4d1' : '#df9f86'), x, .72, -.1);
-    const panel = plane(gallery, 6.78, 4.83, basicTexture(artTextures[index]), x, .72, .02);
-    exhibitFrames.push(panel);
-    box(gallery, 7.5, .35, 2.8, .14, plinthMat, x, -1.75, .05);
-    const arch = new THREE.Mesh(new THREE.TorusGeometry(3.7, .13, 10, 64, Math.PI), archMat);
-    resources.add(arch.geometry);
-    arch.position.set(x, 1.6, -2.2);
-    gallery.add(arch);
-    box(gallery, .26, 3.7, .26, .05, archMat, x - 3.7, -.25, -2.2);
-    box(gallery, .26, 3.7, .26, .05, archMat, x + 3.7, -.25, -2.2);
-    const sphereGeometry = new THREE.SphereGeometry(.57, 28, 20);
-    resources.add(sphereGeometry);
-    const pearl = new THREE.Mesh(sphereGeometry, material(index % 2 ? '#d9b4a0' : '#c4b7d9', { roughness: .24, metalness: .4 }));
-    pearl.position.set(x + 4.5, -1.25, 1);
-    gallery.add(pearl);
-    const ornament = new THREE.Mesh(new THREE.TorusGeometry(.65, .15, 12, 32), archMat);
-    resources.add(ornament.geometry);
-    ornament.position.set(x - 4.7, -.8, .3);
-    ornament.rotation.set(.2, -.3, .35);
-    gallery.add(ornament);
-  });
-
-  const menu = new THREE.Scene();
-  menu.background = new THREE.Color('#cbdcda');
-  const menuCamera = new THREE.OrthographicCamera(-7.5, 7.5, 3.96, -3.96, .1, 30);
-  menuCamera.position.z = 10;
-  const menuTargets = artTextures.map((texture, index) => {
-    const tile = plane(menu, 4.15, 2.96, basicTexture(texture), (index % 3 - 1) * 4.65, 1.55 - Math.floor(index / 3) * 3.25, 0);
-    tile.userData.projectIndex = index;
-    return tile;
-  });
-
-  const hudTexture = canvasTexture(1440, 760, () => {});
-  function updateHUD() {
-    const ctx = hudTexture.image.getContext('2d');
-    ctx.clearRect(0, 0, 1440, 760);
-    ctx.fillStyle = '#183044ed';
-    ctx.fillRect(0, 0, 1440, 62);
-    ctx.fillRect(0, 705, 1440, 55);
-    ctx.fillStyle = PAPER;
-    ctx.textAlign = 'left'; ctx.font = '500 20px monospace';
-    ctx.fillText('SYRENA / PROJECT WORLD', 32, 40);
-    ctx.textAlign = 'right'; ctx.font = '500 17px monospace';
-    ctx.fillText(overview ? 'SELECT YOUR NEXT ADVENTURE' : 'STUDIO CONCEPTS · VOL. 01', 1408, 39);
-    ctx.textAlign = 'left'; ctx.font = '500 18px monospace';
-    ctx.fillText(overview ? 'TAP A PROJECT TO EXPLORE' : `${String(selected + 1).padStart(2, '0')} / 06   ${projects[selected].title.toUpperCase()}`, 32, 740);
-    ctx.textAlign = 'right';
-    ctx.fillText(overview ? 'H  BACK TO GALLERY' : 'A  OPEN PROJECT     D → NEXT', 1408, 740);
-    if (sleeping) {
-      ctx.fillStyle = '#142b3df9'; ctx.fillRect(0, 0, 1440, 760);
-      ctx.fillStyle = PAPER; ctx.textAlign = 'center';
-      ctx.font = 'italic 58px Georgia'; ctx.fillText('Dreaming up the next idea.', 720, 370);
-      ctx.font = '19px monospace'; ctx.fillText('TAP THE SCREEN OR A CONTROL TO WAKE', 720, 435);
-    }
-    hudTexture.needsUpdate = true;
-    screenDirty = true;
-  }
-  const hudScene = new THREE.Scene();
-  const hudCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, .1, 10);
-  hudCamera.position.z = 1;
-  const hudPlane = plane(hudScene, 2, 2, basicTexture(hudTexture, { transparent: true, depthTest: false, depthWrite: false }), 0, 0, 0);
-  const startupTexture = canvasTexture(384, 202, () => {});
+  const world = createPixelWorld(projects, colors, () => { screenDirty = true; requestFrame(); });
+  const worldTexture = new THREE.CanvasTexture(world.canvas);
+  worldTexture.colorSpace = THREE.SRGBColorSpace;
+  worldTexture.magFilter = THREE.NearestFilter;
+  worldTexture.minFilter = THREE.NearestFilter;
+  worldTexture.generateMipmaps = false;
+  resources.add(worldTexture);
+  const startupTexture = canvasTexture(960, 508, () => {});
   startupTexture.magFilter = THREE.NearestFilter;
   startupTexture.minFilter = THREE.NearestFilter;
   startupTexture.generateMipmaps = false;
-  updateHUD();
+  screenMat.map = worldTexture;
 
   function pick(event) {
     const rect = canvas.getBoundingClientRect();
@@ -426,14 +296,8 @@ export function createSwitchStage(host, projects, onAction, onHover) {
     if (hit.object === screen) {
       if (sleeping) { onAction('power'); return; }
       if (startup !== 'done') { onAction('open'); return; }
-      if (overview) {
-        raycaster.setFromCamera(new THREE.Vector2(hit.uv.x * 2 - 1, hit.uv.y * 2 - 1), menuCamera);
-        const tile = raycaster.intersectObjects(menuTargets)[0];
-        if (tile) {
-          // Delegate selection to React so its live text and links stay in sync.
-          onAction(`select:${tile.object.userData.projectIndex}`);
-        }
-      } else onAction('open');
+      const action = world.hitTest(hit.uv.x, hit.uv.y, overview);
+      if (action) onAction(action);
     } else onAction(hit.object.userData.action);
   }
   function onCancel() { downPoint = null; onLeave(); }
@@ -469,39 +333,35 @@ export function createSwitchStage(host, projects, onAction, onHover) {
   function render(time) {
     frame = 0;
     if (disposed || !visible || document.hidden) return;
-    const delta = lastTime ? Math.min((time - lastTime) / 1000, .05) : .016;
+    // Use the actual active-frame time so slower devices do not slow the story down.
+    const delta = lastTime ? Math.max(0, (time - lastTime) / 1000) : .016;
     lastTime = time;
-    const reduced = motionQuery.matches;
-    const moving = !paused && !reduced;
+    const reduced = motionQuery.matches && !motionOverride;
+    const moving = !paused && !reduced && !sleeping;
     if (moving) elapsed += delta;
-    if (moving) startupTime += delta;
-    const ease = 1 - Math.exp(-delta * 9);
-    const destination = selected * 11;
-    galleryX = reduced ? destination : THREE.MathUtils.lerp(galleryX, destination, ease);
-    if (Math.abs(galleryX - destination) < .005) galleryX = destination;
-    galleryCamera.position.set(galleryX + .25, 1.05, 9.4);
-    galleryCamera.lookAt(galleryX, .35, 0);
-    const welcoming = startup !== 'done' && !sleeping;
-    if (welcoming && (screenDirty || (moving && time - lastStartupPaint > 50))) {
-      paintStartup(startupTexture.image.getContext('2d'), { time: startupTime, phase: startup, reduced, colors });
-      startupTexture.needsUpdate = true;
-      lastStartupPaint = time;
-      screenDirty = true;
+    if (startup === 'playing' && !paused && !sleeping) startupTime += delta;
+    else if (startup === 'title' && moving) startupTime += delta;
+    if (startup === 'playing' && startupTime >= STARTUP_DURATION) onAction('intro-complete');
+    const ease = 1 - Math.exp(-Math.min(delta, .25) * 9);
+    if (reduced) { cameraOffset = travelTarget; travelElapsed = 1; }
+    else if (!paused && !sleeping) {
+      travelElapsed = Math.min(1, travelElapsed + delta / .95);
+      const t = travelElapsed * travelElapsed * (3 - 2 * travelElapsed);
+      cameraOffset = travelElapsed === 1 ? travelTarget : travelFrom + (travelTarget - travelFrom) * t;
     }
-    hudPlane.material.map = welcoming ? startupTexture : hudTexture;
-    if (screenDirty || galleryX !== destination) {
-      renderer.setRenderTarget(target);
-      renderer.setClearColor(0x000000, 1);
-      if (!welcoming) {
-        renderer.render(overview ? menu : gallery, overview ? menuCamera : galleryCamera);
-        renderer.autoClear = false;
-        renderer.clearDepth();
+    const travelling = cameraOffset !== travelTarget;
+    const welcoming = startup !== 'done' && !sleeping;
+    if (screenDirty || ((moving || travelling) && time - lastScreenPaint > 1000 / 30)) {
+      if (welcoming) {
+        paintStartup(startupTexture.image.getContext('2d'), { time: startupTime, phase: startup, reduced, colors });
+        startupTexture.needsUpdate = true;
+      } else {
+        world.draw({ time: elapsed, selected, camera: cameraOffset, travelling, direction, overview, reduced, sleeping });
+        worldTexture.needsUpdate = true;
       }
-      renderer.render(hudScene, hudCamera);
-      renderer.autoClear = true;
-      renderer.setRenderTarget(null);
-      renderer.setClearColor(0x000000, 0);
-      screenDirty = galleryX !== destination;
+      screenMat.map = welcoming ? startupTexture : worldTexture;
+      lastScreenPaint = time;
+      screenDirty = false;
     }
     const tiltX = -.06 + (moving ? -pointerY * .09 : 0);
     const tiltY = -.13 + (moving ? pointerX * .12 : 0);
@@ -518,20 +378,30 @@ export function createSwitchStage(host, projects, onAction, onHover) {
     shadow.material.opacity = moving ? .85 + Math.sin(elapsed * .8) * .08 : .9;
     renderer.render(scene, camera);
     const tilting = Math.abs(root.rotation.x - tiltX) + Math.abs(root.rotation.y - tiltY) > .001;
-    if (moving || galleryX !== destination || pressing || tilting) requestFrame();
+    if (moving || (!paused && !sleeping && (travelling || startup === 'playing')) || pressing || tilting) requestFrame();
   }
   function onVisibility() { lastTime = 0; requestFrame(); }
-  function onMotionChange() { requestFrame(); }
+  function onMotionChange() { screenDirty = true; requestFrame(); }
   document.addEventListener('visibilitychange', onVisibility);
   motionQuery.addEventListener('change', onMotionChange);
   resize();
 
   return {
-    select(index) { selected = index; overview = false; sleeping = false; updateHUD(); requestFrame(); },
-    setOverview(value) { overview = value; updateHUD(); requestFrame(); },
-    setSleeping(value) { sleeping = value; updateHUD(); requestFrame(); },
-    setStartup(value) { startup = value; startupTime = 0; lastStartupPaint = -Infinity; screenDirty = true; requestFrame(); },
-    setPaused(value) { paused = value; requestFrame(); },
+    select(index) {
+      let distance = index - selected;
+      if (distance > projects.length / 2) distance -= projects.length;
+      if (distance < -projects.length / 2) distance += projects.length;
+      direction = distance < 0 ? -1 : 1;
+      travelFrom = cameraOffset;
+      travelTarget += distance * STATION_SPACING;
+      travelElapsed = distance ? 0 : 1;
+      selected = index; overview = false; sleeping = false; screenDirty = true; requestFrame();
+    },
+    setOverview(value) { overview = value; screenDirty = true; requestFrame(); },
+    setSleeping(value) { sleeping = value; screenDirty = true; requestFrame(); },
+    setStartup(value) { startup = value; startupTime = 0; lastScreenPaint = -Infinity; screenDirty = true; requestFrame(); },
+    setPaused(value) { paused = value; lastTime = 0; screenDirty = true; requestFrame(); },
+    setMotionOverride(value) { motionOverride = value; screenDirty = true; requestFrame(); },
     setVisible(value) { visible = value; lastTime = 0; if (!value) { cancelAnimationFrame(frame); frame = 0; } else requestFrame(); },
     press,
     dispose() {
@@ -545,9 +415,8 @@ export function createSwitchStage(host, projects, onAction, onHover) {
       canvas.removeEventListener('pointerdown', onDown);
       canvas.removeEventListener('pointerup', onUp);
       canvas.removeEventListener('pointercancel', onCancel);
-      pendingImages.forEach((image) => { image.onload = null; image.onerror = null; image.src = ''; });
+      world.dispose();
       resources.forEach((resource) => resource.dispose());
-      target.dispose();
       environment.dispose();
       renderer.dispose();
       renderer.forceContextLoss();

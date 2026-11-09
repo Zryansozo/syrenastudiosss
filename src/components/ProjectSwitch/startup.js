@@ -1,81 +1,66 @@
-// Original pixel lettering and coastal scene; no external sprites or font requests.
-const glyphs = {
-  A:['01110','10001','10001','11111','10001','10001','10001'], B:['11110','10001','10001','11110','10001','10001','11110'],
-  C:['01111','10000','10000','10000','10000','10000','01111'], D:['11110','10001','10001','10001','10001','10001','11110'],
-  E:['11111','10000','10000','11110','10000','10000','11111'], F:['11111','10000','10000','11110','10000','10000','10000'],
-  G:['01111','10000','10000','10111','10001','10001','01111'], H:['10001','10001','10001','11111','10001','10001','10001'],
-  I:['11111','00100','00100','00100','00100','00100','11111'], J:['00111','00010','00010','00010','10010','10010','01100'],
-  K:['10001','10010','10100','11000','10100','10010','10001'], L:['10000','10000','10000','10000','10000','10000','11111'],
-  M:['10001','11011','10101','10101','10001','10001','10001'], N:['10001','11001','10101','10011','10001','10001','10001'],
-  O:['01110','10001','10001','10001','10001','10001','01110'], P:['11110','10001','10001','11110','10000','10000','10000'],
-  Q:['01110','10001','10001','10001','10101','10010','01101'], R:['11110','10001','10001','11110','10100','10010','10001'],
-  S:['01111','10000','10000','01110','00001','00001','11110'], T:['11111','00100','00100','00100','00100','00100','00100'],
-  U:['10001','10001','10001','10001','10001','10001','01110'], V:['10001','10001','10001','10001','10001','01010','00100'],
-  W:['10001','10001','10001','10101','10101','11011','10001'], X:['10001','10001','01010','00100','01010','10001','10001'],
-  Y:['10001','10001','01010','00100','00100','00100','00100'], Z:['11111','00001','00010','00100','01000','10000','11111'],
-  ' ':['00000','00000','00000','00000','00000','00000','00000'],
-};
+import { pixelText, pixelRect, cloud, shell, lighthouse, sea, ease } from './pixelArt';
 
-export function paintStartup(ctx, { time = 0, phase = 'title', reduced = false, colors }) {
-  const { navy, ice, blue, butter } = colors;
-  const w = ctx.canvas.width;
-  const h = ctx.canvas.height;
-  ctx.clearRect(0, 0, w, h);
-  ctx.imageSmoothingEnabled = false;
-  ctx.fillStyle = navy;
-  ctx.fillRect(0, 0, w, h);
-  const rect = (x, y, width, height, color) => { ctx.fillStyle = color; ctx.fillRect(Math.round(x), Math.round(y), width, height); };
-  function text(value, y, size, color, bounce = false) {
-    const left = Math.round((w - (value.length * 6 - 1) * size) / 2);
-    [...value].forEach((letter, index) => {
-      const offset = bounce && !reduced ? Math.round(-Math.sin(Math.min(1, Math.max(0, (time - index * .065) / .65)) * Math.PI) * 10) : 0;
-      const glyph = glyphs[letter] || glyphs[' '];
-      glyph.forEach((row, py) => [...row].forEach((pixel, px) => {
-        if (pixel === '1') rect(left + (index * 6 + px) * size, y + py * size + offset, size, size, color);
-      }));
-    });
-  }
-  // Sparse stars, stepped clouds, a rising sun and a little lighthouse.
-  [[22,28],[69,17],[331,24],[356,69],[301,43],[34,96]].forEach(([x,y], i) => {
-    rect(x, y, 2, 2, i % 2 ? blue : butter);
-    if (i % 2 === 0) { rect(x-2,y+1,6,1,butter); rect(x+1,y-2,1,6,butter); }
+export const STARTUP_DURATION = 3.1;
+
+export function paintStartup(ctx,{time=0,phase='title',reduced=false,colors}) {
+  const W=480,H=254;
+  ctx.save(); ctx.scale(ctx.canvas.width/W,ctx.canvas.height/H);
+  ctx.imageSmoothingEnabled=false;
+  const r=(x,y,w,h,color)=>pixelRect(ctx,x,y,w,h,color);
+  const text=(value,x,y,size,color,align='center')=>pixelText(ctx,value,x,y,size,color,align);
+  r(0,0,W,H,colors.navy);
+  const t=reduced ? 2 : time;
+  const progress=phase==='playing' && !reduced ? Math.min(time/STARTUP_DURATION,1) : 0;
+  const entrance=phase==='playing' && !reduced ? ease((progress-.56)/.44) : 0;
+  ctx.save();
+  ctx.translate(W/2,H/2); ctx.scale(1+entrance*3.4,1+entrance*3.4);
+  ctx.translate(-(W/2+entrance*178),-(H/2+entrance*76));
+  // All waiting-screen motion loops: the welcome stays alive after the reveal.
+  [[32,26],[78,17],[429,35],[360,20],[21,118]].forEach(([x,y],i)=>{
+    const sparkle=reduced ? 1 : .6+Math.sin(t*2+i)*.35;
+    ctx.globalAlpha=sparkle; r(x,y,3,3,colors.butter); r(x-2,y+1,7,1,colors.butter); ctx.globalAlpha=1;
   });
-  const cloud = (x, y) => { rect(x+6,y,22,4,ice); rect(x,y+4,37,5,ice); rect(x+5,y+9,25,3,blue); };
-  cloud(19, 64); cloud(320, 86);
-  const progress = phase === 'playing' ? Math.min(time / 2.9, 1) : 0;
-  const sunY = 150 - (reduced ? 20 : Math.min(time / 1.2, 1) * 20) - progress * 10;
-  rect(291,sunY,25,25,butter); rect(296,sunY-4,15,33,butter); rect(287,sunY+5,33,15,butter);
-  rect(0,155,w,h-155,'#345578');
-  rect(0,155,w,2,blue);
-  for (let row = 0; row < 4; row++) {
-    for (let x = -20; x < w + 20; x += 56) {
-      const drift = reduced ? 0 : Math.floor(time * 5) % 14;
-      rect(x + (row % 2) * 22 + drift, 165 + row * 10, 22, 1, row % 2 ? blue : ice);
-    }
+  cloud(ctx,((30+t*13)%570)-45,29,colors,.55);
+  cloud(ctx,((338+t*8)%570)-45,134,colors,.65);
+  const sunY=149-(reduced ? 20 : Math.min(t/2,1)*20)-Math.sin(t*.8)*3;
+  r(372,sunY,34,34,colors.butter); r(379,sunY-5,20,44,colors.butter); r(367,sunY+7,44,20,colors.butter);
+  sea(ctx,{time:t,y:187,width:W,height:H,colors,reduced});
+  r(0,224,W,30,colors.navy);
+  r(12,217,100,7,colors.blue); r(17,213,92,4,colors.ice);
+  const platforms=[147,213,279,345];
+  platforms.forEach((x,i)=>{const y=216-i%2*7; r(x,y,37,5,colors.butter); r(x+4,y+5,29,5,colors.blue);});
+  const door=ease((progress-.58)/.12);
+  lighthouse(ctx,399,216,colors,{door,beam:true,time:reduced?0:t});
+  let x,y;
+  if(phase==='playing') {
+    const run=ease(progress/.71);
+    x=87+run*331;
+    y=211-(reduced ? 0 : Math.abs(Math.sin(Math.min(progress/.71,1)*Math.PI*5))*31);
+    ctx.globalAlpha=1-ease((progress-.68)/.08);
+  } else {
+    const lap=(t*.65)%4;
+    x=147+lap*66;
+    y=208-(reduced?0:Math.abs(Math.sin(lap*Math.PI))*29);
   }
-  rect(15,153,72,7,blue); rect(22,149,56,4,ice);
-  rect(43,125,12,24,ice); rect(40,120,18,6,blue); rect(44,114,10,7,butter);
-  rect(41,111,16,3,ice); rect(47,104,4,7,blue); rect(47,134,4,6,navy);
-  [133,201,267,333].forEach((x, index) => {
-    const y = 169 - (index % 2) * 9;
-    rect(x,y,27,5,butter); rect(x+3,y+5,21,4,blue);
-  });
-  // A tiny jumping seashell travels across the platforms during the jingle.
-  const shellX = phase === 'playing' ? 80 + progress * 260 : 96;
-  const shellY = phase === 'playing' && !reduced ? 152 - Math.abs(Math.sin(progress * Math.PI * 4)) * 18 : 151;
-  rect(shellX+3,shellY-8,9,3,ice); rect(shellX,shellY-5,15,6,ice); rect(shellX+3,shellY+1,9,3,butter);
-  rect(shellX+6,shellY-6,3,7,blue);
-  text('WELCOME TO OUR WORLD', 20, 1, blue);
-  text('SYRENA', 45, 7, '#0b1428', true);
-  text('SYRENA', 42, 7, ice, true);
-  text('STUDIOS', 101, 3, butter, true);
-  text(phase === 'playing' ? 'A NEW CREATIVE CURRENT' : 'PRESS START', 137, 1, phase === 'playing' ? ice : butter);
-  text('BRAND   DIGITAL   PLAY', 191, 1, ice);
-  // A gentle block wipe opens the gallery, without a flash.
-  if (phase === 'playing' && progress > .88 && !reduced) {
-    const columns = Math.ceil((progress - .88) / .12 * 24);
-    for (let x = 0; x < columns; x++) rect(x * 16, 0, 16, h, navy);
+  shell(ctx,x,y,colors,{step:t*20,scale:.8}); ctx.globalAlpha=1;
+  const title='SYRENA';
+  [...title].forEach((letter,i)=>{
+    const reveal=reduced ? 1 : ease((t-i*.14)/.38);
+    const bounce=reduced ? 0 : -Math.sin(reveal*Math.PI)*23+Math.sin(t*2+i*.7)*2;
+    ctx.globalAlpha=reveal;
+    text(letter,124+i*47,45+bounce,8,'#0b1428');
+    text(letter,124+i*47,42+bounce,8,colors.ice);
+  }); ctx.globalAlpha=1;
+  text('WELCOME TO OUR WORLD',240,18,1,colors.blue);
+  text('STUDIOS',240,108,3,colors.butter);
+  text(phase==='playing' ? 'FOLLOW THE CURRENT' : 'PRESS START',240,153,1,colors.butter);
+  ctx.restore();
+  if(entrance>.83) {
+    ctx.globalAlpha=ease((entrance-.83)/.17); r(0,0,W,H,colors.navy); ctx.globalAlpha=1;
   }
+  r(0,H-19,W,19,colors.navy);
+  text('BRAND   DIGITAL   PLAY',240,H-12,1,colors.ice);
+  ctx.restore();
 }
 
 // A short original chiptune, synthesized locally after a user gesture.

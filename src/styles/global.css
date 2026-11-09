@@ -17,6 +17,7 @@
 :root {
   /* Brand primitives. Components use the semantic aliases below. */
   --signature-blue: #779EE8;
+  --ocean-navy: #091E39;
   --midnight-navy: #202B46;
   --powder-blue: #DCE8FA;
   --butter-yellow: #F7E49A;
@@ -30,7 +31,8 @@
   --text-placeholder: #545C71;
   --border-width: 1.5px;
   /* Blue is the default canvas; warm colors punctuate the composition. */
-  --surface-brand: var(--midnight-navy);
+  --surface-brand: var(--ocean-navy);
+  --surface-raised: var(--midnight-navy);
   --text-on-brand: var(--warm-white);
   --surface-secondary: var(--powder-blue);
   --surface-image: var(--powder-blue);
@@ -47,7 +49,7 @@
   --mint: var(--pistachio-mint);
   --ink: var(--midnight-navy);
   --bg-primary: var(--surface-brand);
-  --bg-dark: var(--navy);
+  --bg-dark: var(--surface-brand);
   --bg-section-alt: var(--ice);
   --bg-card: var(--ice);
   --bg-card-hover: var(--white);

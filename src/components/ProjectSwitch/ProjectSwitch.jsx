@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Grid2X2, Pause, Play, RotateCcw, Volume2, VolumeX } from 'lucide-react';
 import { projects } from '../../data/projects';
-import { createStartupSound } from './startup';
+import { createStartupSound, STARTUP_DURATION } from './startup';
 import styles from './ProjectSwitch.module.css';
 
 function readPreference(key, fallback) {
@@ -18,10 +19,13 @@ export default function ProjectSwitch() {
   const [active, setActive] = useState(0);
   const [status, setStatus] = useState('loading');
   const [overview, setOverview] = useState(false);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(() => readPreference('syrena-player-motion', '') === 'off');
+  const [motionOverride, setMotionOverride] = useState(() => readPreference('syrena-player-motion', '') === 'on');
+  const prefersReduced = useReducedMotion();
+  const animationPaused = paused || (prefersReduced && !motionOverride);
   const [sleeping, setSleeping] = useState(false);
   const [hoveredControl, setHoveredControl] = useState('');
-  const [startup, setStartup] = useState(() => readPreference('syrena-player-intro', '') === 'seen' ? 'done' : 'title');
+  const [startup, setStartup] = useState(() => readPreference('syrena-player-intro-v2', '') === 'seen' ? 'done' : 'title');
   const [soundOn, setSoundOn] = useState(() => readPreference('syrena-player-sound', 'on') === 'on');
   const startupRef = useRef(startup);
   const soundOnRef = useRef(soundOn);
@@ -37,7 +41,7 @@ export default function ProjectSwitch() {
     startupRef.current = 'done';
     setStartup('done');
     engineRef.current?.setStartup('done');
-    try { sessionStorage.setItem('syrena-player-intro', 'seen'); } catch { /* Storage is optional. */ }
+    try { sessionStorage.setItem('syrena-player-intro-v2', 'seen'); } catch { /* Storage is optional. */ }
     if (document.activeElement?.closest('[data-intro-controls]')) stageRef.current?.focus({ preventScroll: true });
   }, []);
 
@@ -50,7 +54,9 @@ export default function ProjectSwitch() {
       soundRef.current ??= createStartupSound();
       void soundRef.current.play();
     }
-    introTimer.current = window.setTimeout(finishIntro, 3100);
+    // The renderer completes its story on the animation clock, so pausing or
+    // scrolling away cannot cut the entrance short. The fallback needs a timer.
+    if (!engineRef.current) introTimer.current = window.setTimeout(finishIntro, STARTUP_DURATION * 1000);
   }, [finishIntro]);
 
   const replayIntro = () => {
@@ -72,6 +78,18 @@ export default function ProjectSwitch() {
     try { sessionStorage.setItem('syrena-player-sound', next ? 'on' : 'off'); } catch { /* Storage is optional. */ }
   };
 
+  const toggleMotion = () => {
+    const next = animationPaused;
+    if (prefersReduced && !motionOverride) {
+      setMotionOverride(true);
+      setPaused(false);
+    } else {
+      if (!paused) soundRef.current?.stop();
+      setPaused((value) => !value);
+    }
+    try { sessionStorage.setItem('syrena-player-motion', next ? 'on' : 'off'); } catch { /* Storage is optional. */ }
+  };
+
   const select = useCallback((index) => {
     if (startupRef.current !== 'done') finishIntro();
     const next = (index + projects.length) % projects.length;
@@ -83,6 +101,7 @@ export default function ProjectSwitch() {
   }, [finishIntro]);
 
   const act = useCallback((action) => {
+    if (action === 'intro-complete') { finishIntro(); return; }
     if (action.startsWith('select:')) {
       select(Number(action.slice(7)));
       return;
@@ -132,6 +151,7 @@ export default function ProjectSwitch() {
         engineRef.current = engine;
         engine.select(activeRef.current);
         engine.setStartup(startupRef.current);
+        if (startupRef.current === 'playing') clearTimeout(introTimer.current);
         setStatus('ready');
         observer.observe(stageRef.current);
       } catch (error) {
@@ -150,6 +170,7 @@ export default function ProjectSwitch() {
 
   useEffect(() => { engineRef.current?.setOverview(overview); }, [overview, status]);
   useEffect(() => { engineRef.current?.setPaused(paused); }, [paused, status]);
+  useEffect(() => { engineRef.current?.setMotionOverride(motionOverride); }, [motionOverride, status]);
   useEffect(() => { engineRef.current?.setSleeping(sleeping); }, [sleeping, status]);
 
   useEffect(() => {
@@ -204,7 +225,7 @@ export default function ProjectSwitch() {
           <span className={styles.liveLabel}><i /> {sleeping ? 'TAKING A LITTLE BREAK' : welcoming ? 'YOUR NEXT ADVENTURE STARTS HERE' : overview ? 'CHOOSE YOUR NEXT ADVENTURE' : 'A SMALL WORLD. ALL YOURS.'}</span>
           <div className={styles.stageTools}>
             <button className={styles.motionToggle} type="button" aria-pressed={soundOn} onClick={toggleSound} aria-label={soundOn ? 'Mute startup sound' : 'Enable startup sound'}>{soundOn ? <Volume2 size={14} /> : <VolumeX size={14} />}<span>Sound {soundOn ? 'on' : 'off'}</span></button>
-            <button className={styles.motionToggle} type="button" aria-pressed={paused} onClick={() => setPaused((value) => !value)} aria-label={paused ? 'Resume console motion' : 'Pause console motion'}>{paused ? <Play size={13} /> : <Pause size={13} />}<span>{paused ? 'Resume motion' : 'Pause motion'}</span></button>
+            <button className={`${styles.motionToggle} ${animationPaused ? styles.motionPrompt : ''}`} type="button" aria-pressed={!animationPaused} onClick={toggleMotion} aria-label={animationPaused ? 'Enable animations' : 'Pause animations'}>{animationPaused ? <Play size={13} /> : <Pause size={13} />}<span>{animationPaused ? 'Enable animation' : 'Pause animation'}</span></button>
           </div>
         </div>
         {hoveredControl && <span className={styles.controlTooltip} aria-hidden="true">{hoveredControl}</span>}
@@ -218,7 +239,7 @@ export default function ProjectSwitch() {
         <div className={styles.nowPlaying} aria-live="polite" aria-atomic="true"><span className={styles.trackNumber}>{String(active + 1).padStart(2, '0')}<small>/ 06</small></span><div><span className={styles.smallLabel}>NOW PLAYING / {project.category}</span><h3>{project.title}</h3></div></div>
         <div className={styles.controls} role="group" aria-label="Project player controls">
           <button type="button" onClick={() => runControl('previous')} aria-label="Previous project (A or left arrow)"><ArrowLeft size={20} /></button>
-          <button type="button" onClick={() => runControl('home')} aria-label="Toggle project menu (H)" aria-pressed={overview}><Grid2X2 size={18} /></button>
+          <button type="button" onClick={() => runControl('home')} aria-label="Toggle project map (H)" aria-pressed={overview}><Grid2X2 size={18} /></button>
           <button type="button" onClick={() => runControl('next')} aria-label="Next project (D or right arrow)"><ArrowRight size={20} /></button>
           <Link className={styles.openProject} to={`/work#${project.id}`}>Open project <ArrowUpRight size={18} aria-hidden="true" /></Link>
         </div>

@@ -1,7 +1,16 @@
 import * as THREE from 'three';
+import { BANNER, createPaperBanner } from './paperBanner';
 
 const WORLD_WIDTH = 16;
 const REFERENCE_BACKGROUND = '#011527';
+const SWELL = `
+  float paperRise = smoothstep(-4.5, 1.0, position.y) * paperMotion.x;
+  transformed.x += sin(theatreTime * .55 + position.y * .5) * .045 * paperRise;
+  transformed.y += (sin(position.x * .75 + theatreTime * .8) * .085
+    + sin(theatreTime * .6 + paperMotion.y) * .025) * paperRise;
+  transformed.z += sin(position.x * .65 - theatreTime * .55 + paperMotion.y) * .035 * paperRise;
+`;
+const MOTION_HEADER = 'uniform float theatreTime; attribute vec2 paperMotion;\n';
 
 export function createReferencePaperGeometry(layer, artwork) {
   const scale = WORLD_WIDTH / artwork.width;
@@ -28,7 +37,7 @@ export function createReferencePaperGeometry(layer, artwork) {
   return geometry;
 }
 
-export async function createReferencePaperStage(host, artwork, signal) {
+export async function createReferencePaperStage(host, artwork, signal, options = {}) {
   if (artwork.revision !== 3 || !artwork.layers.some(layer => layer.name === 'ocean-foundation')) {
     throw new Error('Outdated paper contours: the continuous foundation is required');
   }
@@ -45,7 +54,7 @@ export async function createReferencePaperStage(host, artwork, signal) {
   }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.65));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  const background = new THREE.Color(getComputedStyle(host).getPropertyValue('--navy').trim() || '#202b46');
+  const background = new THREE.Color(getComputedStyle(host).getPropertyValue('--surface-brand').trim() || '#091e39');
   renderer.setClearColor(background);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
@@ -68,11 +77,13 @@ export async function createReferencePaperStage(host, artwork, signal) {
   light.shadow.normalBias = .003;
   scene.add(light);
   const material = new THREE.MeshLambertMaterial({ map: texture });
+  const theatreTime = { value: 0 };
   material.onBeforeCompile = shader => {
     shader.uniforms.paperBackground = { value: background };
     shader.uniforms.paperReferenceBackground = { value: new THREE.Color(REFERENCE_BACKGROUND) };
-    shader.vertexShader = 'varying float paperFace;\n' + shader.vertexShader;
-    shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\npaperFace = abs(normal.z);');
+    shader.uniforms.theatreTime = theatreTime;
+    shader.vertexShader = MOTION_HEADER + 'varying float paperFace;\n' + shader.vertexShader;
+    shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\npaperFace = abs(normal.z);\n' + SWELL);
     shader.fragmentShader = 'varying float paperFace; uniform vec3 paperBackground; uniform vec3 paperReferenceBackground;\n' + shader.fragmentShader;
     shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>', `
       #include <color_fragment>
@@ -87,14 +98,30 @@ export async function createReferencePaperStage(host, artwork, signal) {
       #include <opaque_fragment>
     `);
   };
-  material.customProgramCacheKey = () => 'reference-paper-surface-v4';
+  material.customProgramCacheKey = () => 'reference-paper-theatre-v1';
+  // Keep the live shadows attached to the moving paper contours.
+  const depthMaterial = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking });
+  depthMaterial.onBeforeCompile = shader => {
+    shader.uniforms.theatreTime = theatreTime;
+    shader.vertexShader = MOTION_HEADER + shader.vertexShader;
+    shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n' + SWELL);
+  };
+  depthMaterial.customProgramCacheKey = () => 'reference-paper-theatre-depth-v1';
   const meshes = [];
   const groups = [];
+  const scale = WORLD_WIDTH / artwork.width;
+  const surfer = new THREE.Group();
+  const pivot = new THREE.Vector3((695 - artwork.width / 2) * scale, (artwork.height / 2 - 315) * scale, 0);
+  surfer.position.copy(pivot); scene.add(surfer);
+  const banner = createPaperBanner(scale);
+  banner.rig.position.set((BANNER.hand[0] - 695) * scale, (315 - BANNER.hand[1]) * scale, 0);
+  surfer.add(banner.rig);
   let frame = 0, disposed = false, visible = false, lost = false;
+  let lastTick = 0, lastDraw = 0;
+  let motion = options.motion ?? !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let resizeObserver, intersection;
   let removeListeners = () => {};
   const pointer = new THREE.Vector2(), target = new THREE.Vector2();
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   function dispose() {
     if (disposed) return;
@@ -102,28 +129,34 @@ export async function createReferencePaperStage(host, artwork, signal) {
     cancelAnimationFrame(frame);
     resizeObserver?.disconnect(); intersection?.disconnect(); removeListeners();
     meshes.forEach(mesh => mesh.geometry.dispose());
-    material.dispose(); texture.dispose();
+    material.dispose(); depthMaterial.dispose(); texture.dispose(); banner.dispose();
     light.shadow.map?.dispose(); light.shadow.mapPass?.dispose();
     renderer.dispose(); canvas.remove();
   }
 
   try {
-    for (const layer of artwork.layers) {
+    for (const [index, layer] of artwork.layers.entries()) {
       if (signal.aborted) throw new DOMException('Aborted', 'AbortError');
       const mesh = new THREE.Mesh(createReferencePaperGeometry(layer, artwork), material);
+      const weights = new Float32Array(mesh.geometry.attributes.position.count * 2);
+      const isSurfer = layer.kind === 'surfer';
+      for (let i = 0; i < weights.length; i += 2) {
+        weights[i] = isSurfer ? 0 : layer.name === 'foreground-foam' ? 1.35 : layer.name === 'fuji-foam' ? .35 : 1;
+        weights[i + 1] = layer.kind === 'water' ? 0 : index * .28;
+      }
+      mesh.geometry.setAttribute('paperMotion', new THREE.BufferAttribute(weights, 2));
+      mesh.customDepthMaterial = depthMaterial;
       // Only the actual raised cutouts cast shadows. The continuous backing
       // must not project artificial polygon edges onto the paper surface.
       mesh.castShadow = layer.kind !== 'water';
       mesh.receiveShadow = true;
       mesh.position.z = layer.z;
       const group = new THREE.Group();
-      group.userData.depth = layer.z;
-      group.userData.surfer = layer.kind === 'surfer';
-      if (group.userData.surfer) {
-        const x = (695 - artwork.width / 2) / artwork.width * WORLD_WIDTH;
-        const y = (artwork.height / 2 - 315) / artwork.width * WORLD_WIDTH;
-        group.position.set(x, y, 0);
-        mesh.position.x = -x; mesh.position.y = -y;
+      group.userData.depth = layer.z * 5;
+      if (isSurfer) {
+        mesh.position.x = -pivot.x; mesh.position.y = -pivot.y;
+        surfer.add(mesh); meshes.push(mesh);
+        continue;
       }
       group.userData.origin = group.position.clone();
       group.add(mesh); scene.add(group); groups.push(group); meshes.push(mesh);
@@ -142,16 +175,26 @@ export async function createReferencePaperStage(host, artwork, signal) {
         group.position.copy(group.userData.origin);
         group.position.x += pointer.x * depth * .025;
         group.position.y += pointer.y * depth * .018;
-        if (group.userData.surfer) group.rotation.z = pointer.x * .006;
       }
+      const time = theatreTime.value;
+      surfer.position.copy(pivot);
+      surfer.position.x += Math.sin(time * .55 + pivot.y * .5) * .045 + Math.sin(time * .65) * .09 + pointer.x * .04;
+      surfer.position.y += Math.sin(pivot.x * .75 + time * .8) * .085 + Math.sin(time * .6) * .025 + Math.sin(time * 1.3) * .025 + pointer.y * .025;
+      surfer.rotation.z = Math.sin(time * .65) * -.025 + Math.sin(time * 1.3) * .012 + pointer.x * .008;
+      banner.update(time);
       renderer.shadowMap.needsUpdate = true;
       renderer.render(scene, camera);
+      host.dataset.paperTime = time.toFixed(3);
     }
-    function tick() {
+    function tick(now) {
       frame = 0;
-      render();
-      // Render on demand; the sculpture rests once the pointer settles.
-      if (!disposed && visible && !document.hidden && !lost && pointer.distanceToSquared(target) > .00001) frame = requestAnimationFrame(tick);
+      if (disposed || !visible || document.hidden || lost) { lastTick = 0; return; }
+      if (!lastDraw || now - lastDraw >= 1000 / 30) {
+        if (motion && lastTick) theatreTime.value += (now - lastTick) / 1000;
+        lastTick = now; lastDraw = now;
+        render();
+      }
+      if (motion || pointer.distanceToSquared(target) > .00001) frame = requestAnimationFrame(tick);
     }
     function requestRender() {
       if (!frame && !disposed && !lost && visible && !document.hidden) frame = requestAnimationFrame(tick);
@@ -159,46 +202,59 @@ export async function createReferencePaperStage(host, artwork, signal) {
     function resize() {
       const width = host.clientWidth, height = host.clientHeight;
       if (!width || !height || disposed) return;
-      const viewWidth = WORLD_WIDTH - .035;
+      const mobile = width <= 700;
+      const viewWidth = mobile ? 9.6 : WORLD_WIDTH - .035;
       const viewHeight = viewWidth / (width / height);
       const bottom = -artwork.height / artwork.width * WORLD_WIDTH / 2 + .01;
+      // On phones, frame the wave and banner together instead of shrinking the
+      // full wide composition until the surfer becomes an unreadable speck.
       camera.left = -viewWidth / 2; camera.right = viewWidth / 2;
+      camera.position.x = mobile ? -2 : 0;
       camera.top = viewHeight / 2; camera.bottom = -viewHeight / 2;
       camera.position.y = bottom + viewHeight / 2;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
+      lastDraw = 0;
       requestRender();
     }
     const interaction = host.closest('footer') || host;
     function move(event) {
-      if (reduced.matches || event.pointerType === 'touch') return;
+      if (!motion || event.pointerType === 'touch') return;
       const bounds = interaction.getBoundingClientRect();
       target.set((event.clientX - bounds.left) / bounds.width * 2 - 1, (event.clientY - bounds.top) / bounds.height * 2 - 1);
       requestRender();
     }
     function rest() { target.set(0, 0); requestRender(); }
+    function setMotion(enabled) {
+      motion = enabled; lastTick = 0; lastDraw = 0;
+      target.set(0, 0); pointer.set(0, 0);
+      host.dataset.paperMotion = enabled ? 'playing' : 'paused';
+      cancelAnimationFrame(frame); frame = 0; requestRender();
+    }
     function visibility() {
       cancelAnimationFrame(frame); frame = 0;
+      lastTick = 0; lastDraw = 0;
       if (!document.hidden) requestRender();
     }
-    function contextLost(event) { event.preventDefault(); lost = true; cancelAnimationFrame(frame); frame = 0; host.dataset.paperScene = 'unavailable'; }
-    function contextRestored() { lost = false; host.dataset.paperScene = 'ready'; resize(); requestRender(); }
+    function contextLost(event) { event.preventDefault(); lost = true; cancelAnimationFrame(frame); frame = 0; lastTick = 0; host.dataset.paperScene = 'unavailable'; }
+    function contextRestored() { lost = false; lastDraw = 0; host.dataset.paperScene = 'ready'; resize(); requestRender(); }
     resizeObserver = new ResizeObserver(resize);
     intersection = new IntersectionObserver(entries => {
       visible = entries[0].isIntersecting;
-      if (!visible) { cancelAnimationFrame(frame); frame = 0; } else requestRender();
+      if (!visible) { cancelAnimationFrame(frame); frame = 0; lastTick = 0; } else { lastDraw = 0; requestRender(); }
     });
     resizeObserver.observe(host); intersection.observe(host);
     interaction.addEventListener('pointermove', move); interaction.addEventListener('pointerleave', rest);
-    reduced.addEventListener('change', rest); document.addEventListener('visibilitychange', visibility);
+    document.addEventListener('visibilitychange', visibility);
     canvas.addEventListener('webglcontextlost', contextLost); canvas.addEventListener('webglcontextrestored', contextRestored);
     removeListeners = () => {
       interaction.removeEventListener('pointermove', move); interaction.removeEventListener('pointerleave', rest);
-      reduced.removeEventListener('change', rest); document.removeEventListener('visibilitychange', visibility);
+      document.removeEventListener('visibilitychange', visibility);
       canvas.removeEventListener('webglcontextlost', contextLost); canvas.removeEventListener('webglcontextrestored', contextRestored);
     };
     resize();
-    return { dispose };
+    setMotion(motion);
+    return { dispose, setMotion };
   } catch (error) {
     dispose(); throw error;
   }

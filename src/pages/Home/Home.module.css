@@ -34,7 +34,7 @@
 @media(max-width:760px) { .hero { height:auto; min-height:0; } .heroInner { padding-top:140px; grid-template-columns:1fr; gap:50px; padding-bottom:90px; } .heroCopy h1 { font-size:clamp(3.3rem,12vw,6.2rem); } .heroCopy > p { max-width:460px; } .postcard { justify-self:center; } .intro,.play { grid-template-columns:1fr; gap:40px; } .introArt { max-width:440px; margin:auto; } .play { padding-top:100px; } }
 @media(max-width:480px) { .heroInner { width:calc(100% - 44px); } .heroCopy :global(.studio-eyebrow) { font-size:.65rem; } .postcard { transform:rotate(3deg); } .roundNote { width:80px; height:80px; font-size:.65rem; } }
 /* Syrena sunset hero */
-.hero { height: auto; min-height: max(880px, 100svh); max-height: none; display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden; padding: clamp(290px, 31vh, 345px) 24px 80px; background: #091E39; isolation: isolate; }
+.hero { height: auto; min-height: max(880px, 100svh); max-height: none; display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden; padding: clamp(290px, 31vh, 345px) 24px 80px; background: var(--surface-brand); isolation: isolate; }
 .heroScene { position: absolute; z-index: -2; inset: -25% 0 0; height: 125%; overflow: hidden; }
 .heroScene img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center center; }
 .heroBottomFade { z-index: -1; height: 27%; background: linear-gradient(to bottom, transparent, rgba(9,30,57,.18) 35%, var(--surface-brand) 100%); }

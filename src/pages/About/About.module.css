@@ -110,7 +110,7 @@
 .principleCard > svg { width: 140px; height: 140px; display: block; margin: 30px auto 35px; }
 .principleCard h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; }
 .principleCard p { font-size: .95rem; line-height: 1.75; }
-.process { display: grid; grid-template-columns: .9fr 1.1fr; gap: 10%; padding: 100px var(--page-gutter); background: var(--navy); color: var(--paper); }
+.process { display: grid; grid-template-columns: .9fr 1.1fr; gap: 10%; padding: 100px var(--page-gutter); background: var(--surface-brand); color: var(--paper); }
 .processIntro h2 { margin: 28px 0 25px; font-size: clamp(2.6rem, 3.7vw, 3.8rem); }
 .processIntro h2 em { color: var(--butter); }
 .processIntro > p { font-size: .85rem; max-width: 320px; color: var(--ice); }

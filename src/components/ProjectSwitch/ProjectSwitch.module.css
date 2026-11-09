@@ -1,4 +1,4 @@
-.section { --player-muted:#a9bfd8; position:relative; overflow:hidden; padding-top:80px; padding-bottom:48px; color:var(--ice); background:#091e39; border-block:1px solid #dce8fa26; scroll-margin-top:90px; }
+.section { --player-muted:#a9bfd8; position:relative; overflow:hidden; padding-top:80px; padding-bottom:48px; color:var(--ice); background:var(--surface-brand); border-block:1px solid #dce8fa26; scroll-margin-top:90px; }
 .eyebrow { display:flex; justify-content:space-between; gap:20px; padding-bottom:25px; border-bottom:1px solid #dce8fa30; color:var(--player-muted); font:500 9px var(--font-mono,monospace); letter-spacing:.1em; }
 .eyebrow > span:last-child,.liveLabel { display:flex; align-items:center; gap:9px; }
 .eyebrow i,.liveLabel i { width:6px; height:6px; background:var(--butter); border-radius:50%; box-shadow:0 0 0 3px #f7e49a13; }
@@ -90,6 +90,8 @@
  .stageTools { gap:12px; }
  .stageTools .motionToggle:last-child span { display:none; }
  .stageTools .motionToggle:last-child { width:30px; justify-content:center; }
+ .stageTools .motionPrompt:last-child { width:auto; }
+ .stageTools .motionPrompt:last-child span { display:inline; }
  .startupControls { flex-wrap:wrap; gap:19px; padding:21px 0; }
  .startActions { width:100%; gap:4px; }
  .startButton { padding:0 20px; font-size:11px; }

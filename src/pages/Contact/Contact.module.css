@@ -1,7 +1,7 @@
 .page {
   --contact-ink: var(--powder-blue);
-  --contact-paper: var(--midnight-navy);
-  --contact-card: var(--midnight-navy);
+  --contact-paper: var(--surface-brand);
+  --contact-card: var(--surface-raised);
   --contact-action: var(--butter-yellow);
   --contact-border: var(--signature-blue);
   min-height: 100vh;
