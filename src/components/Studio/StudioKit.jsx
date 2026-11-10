@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, ArrowRight, Plus, RotateCw, Check } from 'lucide-react';
+import { ArrowUpRight, Plus, RotateCw, Check } from 'lucide-react';
 import './StudioKit.css';
 
 export const capabilities = [
@@ -28,11 +28,38 @@ export function Eyebrow({ children }) { return <span className="studio-eyebrow">
 export function TideLine({ className = '' }) {
   return <svg className={'studio-tide ' + className} viewBox="0 0 1200 160" preserveAspectRatio="none" fill="none" aria-hidden="true"><path d="M-20 110C160-100 270 210 460 85S740 40 820 100S1070 170 1230 15" stroke="currentColor" strokeWidth="1.3"/><path d="M-20 122C160-88 270 222 460 97S740 52 820 112S1070 182 1230 27" stroke="currentColor" strokeWidth=".6"/></svg>;
 }
-export function StudioCTA({ title = 'Your next chapter.', accent = 'A new current.', text = 'A fresh brand, a thoughtful website, or an idea still finding its shape. Let’s explore what it could become.' }) {
-  return <section className="studio-cta studio-wrap"><TideLine/><div className="studio-cta-shell"><img src="/images/sea-triggers/scallop.webp" alt="" width="1262" height="1188" loading="lazy"/></div><Eyebrow>GOOD IDEAS START WITH A HELLO</Eyebrow><h2>{title}<br/><em>{accent}</em></h2><p>{text}</p><div className="studio-actions"><Action>Let’s talk</Action><Action to="/about" secondary>Meet the studio</Action></div><SeaMark className="studio-cta-star"/></section>;
+export function StudioCTA({ title = 'Your next chapter.', accent = 'A new current.', text = 'A fresh brand, a thoughtful website, or an idea still finding its shape. Let’s explore what it could become.', showDivider = true }) {
+  return <section className={'studio-cta studio-wrap' + (showDivider ? ' studio-cta-divided' : '')}>{showDivider && <TideLine/>}<div className="studio-cta-shell"><img src="/images/sea-triggers/scallop.webp" alt="" width="1262" height="1188" loading="lazy"/></div><Eyebrow>GOOD IDEAS START WITH A HELLO</Eyebrow><h2>{title}<br/><em>{accent}</em></h2><p>{text}</p><div className="studio-actions"><Action>Let’s talk</Action><Action to="/about" secondary>Meet the studio</Action></div><SeaMark className="studio-cta-star"/></section>;
 }
 export function CapabilityCards({ compact = false }) {
-  return <div className={'studio-capabilities'+(compact ? ' is-compact' : '')}>{capabilities.map((item,i)=><Link to={'/services#'+item.id} className="studio-capability" key={item.id} data-tone={item.color}><div className="studio-card-top"><span>0{i+1} / {item.title}</span><ArrowUpRight size={20}/></div><SeaMark kind={item.shape}/><h3>{item.short}</h3><p>{item.text}</p><span className="studio-card-bottom">{item.tags[0]} + more <ArrowRight size={16}/></span></Link>)}</div>;
+  return (
+    <div className={'studio-capabilities' + (compact ? ' is-compact' : '')}>
+      {capabilities.map((item, index) => {
+        const titleWords = item.title.split(' ');
+        const finalWord = titleWords.pop();
+        return (
+          <Link to={'/services#' + item.id} className="studio-capability" key={item.id} data-service={item.id}>
+            <div className="studio-capability-poster">
+              <div className="studio-capability-edition" aria-hidden="true">
+                <span>Syrena / Studio series</span>
+                <span>0{index + 1}</span>
+              </div>
+              <h3>{titleWords.join(' ')}{' '}<span>{finalWord}</span></h3>
+              <img src={'/images/capabilities/' + item.id + '.webp'} alt="" loading="lazy" decoding="async" />
+              <div className="studio-capability-footer">
+                <span>{item.tags[0]} + more</span>
+                <ArrowUpRight size={18} aria-hidden="true" />
+              </div>
+            </div>
+            <div className="studio-capability-copy">
+              <strong>{item.short}</strong>
+              <p>{item.text}</p>
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
 }
 const moods = [
   { name:'Low tide', colors:['var(--cobalt)','var(--ice)','var(--coral)'], background:'var(--cobalt)', accent:'var(--coral)', ink:'var(--navy)' },

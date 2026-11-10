@@ -2,7 +2,7 @@
 import { ArrowRight } from 'lucide-react';
 import PageTransition from '../../components/PageTransition/PageTransition';
 import PostCard3D from '../../components/PostCard3D/PostCard3D';
-import { Action, Eyebrow, SeaMark, TideLine, StudioCTA, CapabilityCards, TideMixer } from '../../components/Studio/StudioKit';
+import { Action, Eyebrow, SeaMark, StudioCTA, CapabilityCards, TideMixer } from '../../components/Studio/StudioKit';
 import styles from './Home.module.css';
 import CalendarBlog from '../../components/CalendarBlog/CalendarBlog';
 import ProjectSwitch from '../../components/ProjectSwitch/ProjectSwitch';
@@ -36,15 +36,46 @@ export default function Home() {
         </section>
   <div className={styles.flow}>
   <div className="studio-ribbon studio-wrap"><span>STRATEGY WITH DEPTH</span><SeaMark/><span>DESIGN WITH CHARACTER</span><SeaMark/><span>A FRESH CREATIVE CURRENT</span></div>
-  <section id="below-the-surface" className={'studio-wrap studio-section '+styles.intro}>
-   <div className={styles.introArt}><div className={styles.orbitRing}/><img src="/images/syrena-studio-sculpture.png" alt="Pearlescent shell sculpture with coral and lilac accents" width="1024" height="1024" loading="lazy"/><span className={styles.roundNote}>CURIOUS<br/>BY NATURE</span><span className={styles.artLabel}>FOUND IN THE SYRENA UNIVERSE / 01</span></div>
-   <div><Eyebrow>JUST GETTING STARTED. THINKING A LITTLE DEEPER.</Eyebrow><h2>Small beginnings.<br/><em>Wide-open horizons.</em></h2><p>We’re building Syrena around a simple idea: good strategy and a playful imagination belong together.</p><p>Our world brings brand identity, digital design, and storytelling into the same current. Clear thinking underneath. Plenty of personality on the surface.</p><Action to="/about" secondary>Get to know Syrena</Action></div>
+  <section id="below-the-surface" className={'studio-wrap studio-section '+styles.intro} aria-labelledby="home-about-title">
+    <div className={styles.aboutPoster}>
+      <div className={styles.aboutEdition}>
+        <Eyebrow>Inside Syrena</Eyebrow>
+        <Eyebrow>Studio notes / 01</Eyebrow>
+      </div>
+
+      <h2 id="home-about-title">
+        <span className={styles.aboutScript}>Small beginnings.</span>{' '}
+        <span className={styles.aboutHeadline}><span>Wide-open</span> horizons.</span>
+      </h2>
+
+      <div className={styles.aboutCollage} aria-hidden="true">
+        <div className={styles.aboutPortrait}>
+          <img src="/images/about/wavy-lens.webp" alt="" width="1056" height="792" loading="lazy" />
+        </div>
+        <div className={styles.aboutPostcard}>
+          <img src="/images/about/lighthouse-postcard.webp" alt="" width="900" height="600" loading="lazy" />
+          <span>From the Syrena coast</span>
+        </div>
+        <img className={styles.aboutShell} src="/images/about/chrome-shell.webp" alt="" width="600" height="600" loading="lazy" />
+        <div className={styles.aboutStamp}>
+          <SeaMark kind="wave" />
+          <span>Curious by nature</span>
+        </div>
+      </div>
+
+      <div className={styles.aboutCopy}>
+        <p>We’re building Syrena around a simple idea: good strategy and a playful imagination belong together.</p>
+        <div className="studio-actions">
+          <Action to="/about" secondary>Get to know Syrena</Action>
+        </div>
+      </div>
+    </div>
   </section>
   <section className="studio-wrap studio-section"><div className="studio-split-heading"><div><Eyebrow>WHAT WE’RE HERE TO CREATE</Eyebrow><h2>A little depth.<br/><em>A lot of possibility.</em></h2></div><p>Start with one idea or connect a few. We’ll help shape a direction that makes sense for your next chapter.</p></div><CapabilityCards/></section>
-  <section className={'studio-wrap studio-section '+styles.play}><TideLine/><div><Eyebrow>THE CREATIVE TIDE POOL</Eyebrow><h2>Room to explore.<br/><em>Space to play.</em></h2><p>Colour, movement, and unexpected details can give an idea its own personality. Here’s a small experiment from our studio playground.</p><Action to="/work" secondary>Explore the playground</Action><div className={styles.pearlNote}><SeaMark kind="shell"/><span>CONCEPTS, CURIOSITIES &<br/>THINGS THAT COULD BE.</span></div></div><TideMixer/></section>
+  <section className={'studio-wrap studio-section '+styles.play}><div><Eyebrow>THE CREATIVE TIDE POOL</Eyebrow><h2>Room to explore.<br/><em>Space to play.</em></h2><p>Colour, movement, and unexpected details can give an idea its own personality. Here’s a small experiment from our studio playground.</p><Action to="/work" secondary>Explore the playground</Action><div className={styles.pearlNote}><SeaMark kind="shell"/><span>CONCEPTS, CURIOSITIES &<br/>THINGS THAT COULD BE.</span></div></div><TideMixer/></section>
   <ProjectSwitch />
   <CalendarBlog/>
-  <StudioCTA/>
+  <StudioCTA showDivider={false}/>
   </div>
  </div></PageTransition>;
 }
