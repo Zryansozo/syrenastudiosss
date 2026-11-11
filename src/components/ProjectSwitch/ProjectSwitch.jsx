@@ -47,6 +47,13 @@ export default function ProjectSwitch() {
 
   const startIntro = useCallback(() => {
     if (startupRef.current === 'playing') return;
+    // Pressing Start explicitly resumes the animated sequence, including after
+    // a previous pause or a system reduced-motion default.
+    setPaused(false);
+    setMotionOverride(true);
+    engineRef.current?.setPaused(false);
+    engineRef.current?.setMotionOverride(true);
+    try { sessionStorage.setItem('syrena-player-motion', 'on'); } catch { /* Storage is optional. */ }
     startupRef.current = 'playing';
     setStartup('playing');
     engineRef.current?.setStartup('playing');
@@ -203,30 +210,22 @@ export default function ProjectSwitch() {
   };
 
   return (
-    <section id="project-player" className={`studio-wrap ${styles.section}`} ref={sectionRef} aria-labelledby="project-player-title" data-startup={startup}>
-      <div className={styles.eyebrow}><span>THE SYRENA PLAYROOM</span><span><i /> SIX IDEAS. READY TO PLAY.</span></div>
+    <section id="project-player" className={`studio-wrap studio-section ${styles.section}`} ref={sectionRef} aria-labelledby="project-player-title" data-startup={startup}>
+      <div className={styles.eyebrow}><span>The Syrena playroom</span><span>Studio notes / 02</span></div>
       <div className={styles.intro}>
-        <h2 id="project-player-title">Good work.<br /><em>Now playing.</em></h2>
-        <div><p>A little world of big ideas. Pick up the controls and take our studio concepts for a spin.</p><span className={styles.keyboardHint}>PRESS <kbd>{welcoming ? '↵' : 'D'}</kbd> {welcoming ? 'TO START YOUR LITTLE ADVENTURE' : 'TO DISCOVER THE NEXT ONE'} <ArrowRight size={15} aria-hidden="true" /></span></div>
+        <h2 id="project-player-title"><span className={styles.scriptTitle}>Good work.</span>{' '}<span className={styles.posterTitle}>Now <em>playing.</em></span></h2>
+        <div className={styles.introCopy}><p>Six studio concepts. One little world.<br />Pick up the controls and take an idea for a spin.</p><span className={styles.keyboardHint}>Press <kbd>{welcoming ? '↵' : 'D'}</kbd> {welcoming ? 'to start exploring' : 'for the next idea'} <ArrowRight size={15} aria-hidden="true" /></span></div>
       </div>
 
       <div className={styles.player}>
-        <div className={styles.orbit} aria-hidden="true" />
-        <span className={styles.sideNote} aria-hidden="true">IMAGINATION, IN YOUR HANDS.</span>
-        <span className={styles.edition} aria-hidden="true">SYRENA<br />PLAY SYSTEM / 01</span>
+        <span className={styles.sideNote} aria-hidden="true">Pick a little adventure<svg viewBox="0 0 110 65" fill="none"><path d="M5 8c-2 39 55 51 91 22M80 23l19 4-5 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
+        <span className={styles.edition} aria-hidden="true"><Play size={17} /><span>Studio playroom</span><strong>01</strong><span>Made to explore</span></span>
         <div ref={stageRef} className={styles.stage} role="group" tabIndex={0} aria-label={welcoming ? 'Syrena Studios retro welcome. Enter or tap the screen to start. D skips to the projects. Sound can be muted below.' : 'Interactive 3D project console. D or right arrow for next, A or left arrow for previous, Enter to open, H for project menu.'} aria-describedby="player-instructions">
           {status !== 'ready' && <div className={styles.fallbackConsole}>
             <div className={styles.fallbackJoy}><span /><i>+</i></div>
             <div className={styles.fallbackScreen}><span>SYRENA / PROJECT PLAYER</span><strong>{welcoming ? 'SYRENA STUDIOS' : project.title}</strong><p>{welcoming ? 'A new creative current.' : project.category}</p><span>{status === 'loading' ? 'LOADING YOUR LITTLE WORLD…' : welcoming ? 'PRESS START BELOW' : 'EXPLORE WITH THE CONTROLS BELOW'}</span></div>
             <div className={styles.fallbackJoy}><i>●</i><span /></div>
           </div>}
-        </div>
-        <div className={styles.stageFooter}>
-          <span className={styles.liveLabel}><i /> {sleeping ? 'TAKING A LITTLE BREAK' : welcoming ? 'YOUR NEXT ADVENTURE STARTS HERE' : overview ? 'CHOOSE YOUR NEXT ADVENTURE' : 'A SMALL WORLD. ALL YOURS.'}</span>
-          <div className={styles.stageTools}>
-            <button className={styles.motionToggle} type="button" aria-pressed={soundOn} onClick={toggleSound} aria-label={soundOn ? 'Mute startup sound' : 'Enable startup sound'}>{soundOn ? <Volume2 size={14} /> : <VolumeX size={14} />}<span>Sound {soundOn ? 'on' : 'off'}</span></button>
-            <button className={`${styles.motionToggle} ${animationPaused ? styles.motionPrompt : ''}`} type="button" aria-pressed={!animationPaused} onClick={toggleMotion} aria-label={animationPaused ? 'Enable animations' : 'Pause animations'}>{animationPaused ? <Play size={13} /> : <Pause size={13} />}<span>{animationPaused ? 'Enable animation' : 'Pause animation'}</span></button>
-          </div>
         </div>
         {hoveredControl && <span className={styles.controlTooltip} aria-hidden="true">{hoveredControl}</span>}
       </div>
@@ -247,10 +246,17 @@ export default function ProjectSwitch() {
 
       {overview && <div className={styles.menuToolbar}><span>CHOOSE YOUR NEXT ADVENTURE</span><button type="button" onClick={replayIntro}><RotateCcw size={13} aria-hidden="true" /> Replay startup</button></div>}
       <div className={`${styles.projectMenu} ${overview ? styles.menuOpen : ''}`} role="group" aria-label="Choose a studio project">
-        {projects.map((item, index) => <button type="button" key={item.id} aria-pressed={index === active} onClick={() => select(index)}><span>{String(index + 1).padStart(2, '0')}</span>{item.title}<i aria-hidden="true" /></button>)}
+        {projects.map((item, index) => <button type="button" key={item.id} aria-pressed={index === active} onClick={() => select(index)}><span className={styles.projectIndex}>{String(index + 1).padStart(2, '0')} / CONCEPT</span><span className={styles.projectName}>{item.title}</span><i aria-hidden="true" /></button>)}
       </div>
       </>}
-      <div className={styles.bottomLine}><p id="player-instructions">{welcoming ? <><kbd>↵</kbd> start <span>·</span> <kbd>D</kbd> skip to projects</> : <><kbd>A</kbd> <kbd>D</kbd> browse <span>·</span> <kbd>↵</kbd> open <span>·</span> or tap the console buttons</>}</p><Link to="/work">All studio concepts <ArrowUpRight size={14} aria-hidden="true" /></Link></div>
+      <div className={styles.stageFooter}>
+        <span className={styles.liveLabel}><i /> {sleeping ? 'Taking a little break' : welcoming ? 'Your next adventure starts here' : overview ? 'Choose your next adventure' : 'A small world. All yours.'}</span>
+        <div className={styles.stageTools}>
+          <button className={styles.motionToggle} type="button" aria-pressed={soundOn} onClick={toggleSound} aria-label={soundOn ? 'Mute startup sound' : 'Enable startup sound'}>{soundOn ? <Volume2 size={16} /> : <VolumeX size={16} />}<span>Sound {soundOn ? 'on' : 'off'}</span></button>
+          <button className={`${styles.motionToggle} ${animationPaused ? styles.motionPrompt : ''}`} type="button" aria-pressed={!animationPaused} onClick={toggleMotion} aria-label={animationPaused ? 'Enable animations' : 'Pause animations'}>{animationPaused ? <Play size={15} /> : <Pause size={15} />}<span>{animationPaused ? 'Enable animation' : 'Pause animation'}</span></button>
+        </div>
+      </div>
+      <div className={styles.bottomLine}><p id="player-instructions">{welcoming ? <><kbd>↵</kbd> start <span>·</span> <kbd>D</kbd> skip to projects</> : <><kbd>A</kbd> <kbd>D</kbd> browse <span>·</span> <kbd>↵</kbd> open <span>·</span> or tap the console buttons</>}</p>{!welcoming && <button type="button" className={styles.replayButton} onClick={replayIntro}><RotateCcw size={14} aria-hidden="true" /> Replay startup</button>}<Link to="/work">All studio concepts <ArrowUpRight size={14} aria-hidden="true" /></Link></div>
     </section>
   );
 }
